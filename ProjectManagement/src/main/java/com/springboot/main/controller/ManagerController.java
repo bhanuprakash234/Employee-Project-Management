@@ -1,12 +1,17 @@
 package com.springboot.main.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.main.model.Employee;
 import com.springboot.main.model.Manager;
 import com.springboot.main.model.User;
 import com.springboot.main.service.ManagerService;
@@ -48,5 +53,9 @@ public class ManagerController {
 
 }
 
+	@GetMapping("/getAll")
+	public List<Manager> getAllManager() {
+		return managerService.getAllManager();
+	}
 	
 }

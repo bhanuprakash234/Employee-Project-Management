@@ -1,5 +1,6 @@
 package com.springboot.main.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,11 @@ public class SprintService {
 		if(!optional.isPresent())
 			throw new InvalidIdException("Sid is invalid");
 		return optional.get();
+	}
+
+	public List<Sprint> GetSprint() {
+		
+		return sprintRepository.findAll();
 	}
 
 }
