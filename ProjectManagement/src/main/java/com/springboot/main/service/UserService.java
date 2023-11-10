@@ -1,5 +1,7 @@
 package com.springboot.main.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,6 +30,11 @@ public class UserService implements UserDetailsService {
 		User user = userRepository.findByUsername(username);
 		System.out.println(user);
 		return user;
+	}
+
+	public List<User> getAll() {
+		
+		return userRepository.findAll();
 	}
 	
 	

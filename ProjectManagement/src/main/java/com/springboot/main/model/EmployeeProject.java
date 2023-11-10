@@ -1,6 +1,5 @@
 package com.springboot.main.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,13 +20,27 @@ public class EmployeeProject {
 	@ManyToOne
 	private Project project;
 	
-	@Column(name = "project_name")
-	private String projectName;
-	
-	
 	private String status;
-
 	
+    
+	
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 
 	public Employee getEmployee() {
 		return employee;
@@ -43,22 +56,6 @@ public class EmployeeProject {
 
 	public void setProject(Project project) {
 		this.project = project;
-	}
-
-	public String getProjectName() {
-		return projectName;
-	}
-
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	
