@@ -90,27 +90,27 @@ public class ManagerController {
 	} catch (InvalidIdException e) {
 		return ResponseEntity.badRequest().body(e.getMessage());
 	}
-	
-<<<<<<< HEAD
-	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateManager(@PathVariable("id") int id, 
+	}
+
+	@PutMapping("/update/{mid}")
+	public ResponseEntity<?> updateManager(@PathVariable("mid") int mid, 
 			@RequestBody Manager newManager) {
 		try {
-			Manager manager = managerService.getManagerById(id);
+			Manager manager = managerService.getById(mid);
 			if(newManager.getName() != null)
 				manager.setName(newManager.getName());
 			if(newManager.getEmail() != null)
 				manager.setEmail(newManager.getEmail());
-			
+			if(newManager.getRole() != null)
+				manager.setRole("MANAGER");
 			
 			manager = managerService.insertManager(manager);
 			return ResponseEntity.ok().body(manager);
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
-	}
 	
-=======
+
 }
->>>>>>> 5df74a159bed4aa6dccf0abe884f1ec4af5373bc
+
 }

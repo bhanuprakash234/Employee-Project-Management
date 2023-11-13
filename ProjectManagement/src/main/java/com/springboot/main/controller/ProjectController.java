@@ -83,11 +83,11 @@ public class ProjectController {
 		}
 	}
 	
-	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateProject(@PathVariable("id") int id, 
+	@PutMapping("/update/{pid}")
+	public ResponseEntity<?> updateProject(@PathVariable("pid") int pid, 
 			@RequestBody Project newProject) {
 		try {
-			Project project = projectService.getProjectById(id);
+			Project project = projectService.getById(pid);
 			if(newProject.getLongDesc() != null)
 				project.setLongDesc(newProject.getLongDesc());
 			if(newProject.getEndDate() != null)

@@ -46,7 +46,7 @@ public class ManagerService {
 	}
 
 	public Manager insertManager(Manager manager) {
-		// TODO Auto-generated method stub
+		
 		return managerRepository.save(manager);
 		
 	}

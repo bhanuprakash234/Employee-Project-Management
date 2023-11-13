@@ -119,11 +119,11 @@ public class TaskController {
 		}
 	}
 	
-	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateTaskr(@PathVariable("id") int id, 
+	@PutMapping("/update/{tid}")
+	public ResponseEntity<?> updateTaskr(@PathVariable("tid") int tid, 
 			@RequestBody Task newTask) {
 		try {
-			Task task = taskService.getTaskById(id);
+			Task task = taskService.getById(tid);
 			if(newTask.getDetails() != null)
 				task.setDetails(newTask.getDetails());
 			

@@ -65,11 +65,11 @@ public class SprintController {
 		}
 	}
 	
-	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateSprint(@PathVariable("id") int id, 
+	@PutMapping("/update/{sid}")
+	public ResponseEntity<?> updateSprint(@PathVariable("sid") int sid, 
 			@RequestBody Sprint newSprint) {
 		try {
-			Sprint sprint = sprintService.getSprintById(id);
+			Sprint sprint = sprintService.getById(sid);
 			if(newSprint.getDuration() != null)
 				sprint.setDuration(newSprint.getDuration());
 			if(newSprint.getStatus() != null)
