@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,6 +72,27 @@ public class BacklogController {
 		
 		Pageable pageable = PageRequest.of(page, size);
 		return backlogService.getAllBacklog(pageable);
+	}
+	
+	@GetMapping("/one/{id}")
+	public ResponseEntity<?> getBacklogById(@PathVariable("id") int id) {
+		try {
+			Backlog backlog = backlogService.getBacklogById(id);
+			return ResponseEntity.ok().body(backlog);
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> deleteBacklog(@PathVariable("id") int id) {
+		try {
+			Backlog backlog = backlogService.getBacklogById(id);
+			backlogService.deleteBacklog(backlog.getId());
+			return ResponseEntity.ok().body("Backlog Is deleted");
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 	
 }

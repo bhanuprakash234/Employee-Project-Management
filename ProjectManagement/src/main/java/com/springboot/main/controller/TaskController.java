@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -87,12 +88,33 @@ public class TaskController {
 	}
 	
 
-	@GetMapping("/getAll")
+	@GetMapping("/task/getAll")
 	public List<Task> getAllTask(
 			                             @RequestParam(value="page",required=false,defaultValue="0")Integer page,
 			                             @RequestParam(value="size",required=false,defaultValue="111111111")Integer size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
 		return taskService.getAllTask(pageable);
+	}
+	
+	@GetMapping("/task/one/{id}")
+	public ResponseEntity<?> getTaskById(@PathVariable("id") int id) {
+		try {
+			Task task = taskService.getTaskById(id);
+			return ResponseEntity.ok().body(task);
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@DeleteMapping("/task/delete/{id}")
+	public ResponseEntity<?> deleteTask(@PathVariable("id") int id) {
+		try {
+			Task task = taskService.getTaskById(id);
+			taskService.deleteTask(task.getId());
+			return ResponseEntity.ok().body("Task deleted");
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 }

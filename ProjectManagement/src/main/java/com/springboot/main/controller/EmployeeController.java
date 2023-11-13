@@ -8,9 +8,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -120,6 +122,44 @@ public class EmployeeController {
 		
 		Pageable pageable = PageRequest.of(page, size);
 		return employeeService.getAllEmployee(pageable);
+	}
+	
+	@GetMapping("/one/{id}")
+	public ResponseEntity<?> getEmployeeById(@PathVariable("id") int id) {
+		try {
+			Employee employee = employeeService.getEmployeeById(id);
+			return ResponseEntity.ok().body(employee);
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> deleteEmployee(@PathVariable("id") int id) {
+		try {
+			Employee employee = employeeService.getEmployeeById(id);
+			employeeService.deleteEmployee(employee.getId());
+			return ResponseEntity.ok().body("Employee Record deleted");
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> updateEmployee(@PathVariable("id") int id, 
+			@RequestBody Employee newEmployee) {
+		try {
+			Employee employee = employeeService.getEmployeeById(id);
+			if(newEmployee.getName() != null)
+				employee.setName(newEmployee.getName());
+			if(newEmployee.getEmail() != null)
+				employee.setEmail(newEmployee.getEmail());
+			
+			employee = employeeService.insertEmployee(employee);
+			return ResponseEntity.ok().body(employee);
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 
 }

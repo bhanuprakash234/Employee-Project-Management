@@ -55,6 +55,17 @@ public class TaskService {
 		// TODO Auto-generated method stub
 		return taskRepository.findByBacklogId(bid);
 	}
+	
+	public Task getTaskById(int id) throws InvalidIdException{
+		Optional<Task> optional = taskRepository.findById(id);
+		if(!optional.isPresent())
+			throw new InvalidIdException("Task Id Is Invalid");
+		Task task = optional.get();
+		return task;
+	}
+	public void deleteTask(int id) {
+		taskRepository.deleteById(id);
+	}
 
 
 

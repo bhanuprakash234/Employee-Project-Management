@@ -33,5 +33,16 @@ public class SprintService {
 		
 		return sprintRepository.findAll(pageable).getContent();
 	}
+	public Sprint getSprintById(int id) throws InvalidIdException{
+		Optional<Sprint> optional = sprintRepository.findById(id);
+		if(!optional.isPresent())
+			throw new InvalidIdException("Sprint Id Invalid");
+		Sprint sprint = optional.get();
+		return sprint;
+
+}
+	public void deleteSprint(int id) {
+		sprintRepository.deleteById(id);
+	}
 
 }

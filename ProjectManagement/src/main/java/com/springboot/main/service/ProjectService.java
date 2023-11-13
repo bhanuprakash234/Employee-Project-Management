@@ -31,5 +31,16 @@ public class ProjectService {
 		
 		return projectRepository.findAll(pageable).getContent();
 	}
+	
+	public Project getProjectById(int id) throws InvalidIdException{
+		Optional<Project> optional = projectRepository.findById(id);
+		if(!optional.isPresent())
+			throw new InvalidIdException("Project Id Is Invalid");
+		Project project = optional.get();
+		return project;
+	}
+	public void deleteProject(int id) {
+		projectRepository.deleteById(id);
+	}
 
 }

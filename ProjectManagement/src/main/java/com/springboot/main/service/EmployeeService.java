@@ -49,5 +49,20 @@ public class EmployeeService {
 	}
 
 
+	public Employee getEmployeeById(int id) throws InvalidIdException {
+		Optional<Employee> optional = employeeRepository.findById(id);
+		if (!optional.isPresent())
+			throw new InvalidIdException("Employee Id Invalid");
+		Employee employee = optional.get();
+		return employee;
+	}
 
+	public void deleteEmployee(int id) {
+		employeeRepository.deleteById(id);
+	}
+	
+	public Employee insertEmployee(Employee employee) {
+		return employeeRepository.save(employee);
+		
+	}
 }

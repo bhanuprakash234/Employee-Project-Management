@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,5 +60,25 @@ public class ProjectController {
 		
 		Pageable pageable = PageRequest.of(page, size);
 		return projectService.getAllProject(pageable);
+	}
+	
+	@GetMapping("/one/{id}")
+	public ResponseEntity<?> getProjectById(@PathVariable("id") int id) {
+		try {
+			Project project = projectService.getProjectById(id);
+			return ResponseEntity.ok().body(project);
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> deleteProject(@PathVariable("id") int id) {
+		try {
+			Project project = projectService.getProjectById(id);
+			projectService.deleteProject(project.getId());
+			return ResponseEntity.ok().body("Project deleted");
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 }
