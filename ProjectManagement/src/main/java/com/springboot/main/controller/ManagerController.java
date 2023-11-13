@@ -69,10 +69,10 @@ public class ManagerController {
 		return managerService.getAllManager(pageable);
 	}
 	
-	@GetMapping("/one/{id}")
-	public ResponseEntity<?> getManagerById(@PathVariable("id") int id) {
+	@GetMapping("/one/{mid}")
+	public ResponseEntity<?> getManagerById(@PathVariable("mid") int mid) {
 		try {
-			Manager manager = managerService.getManagerById(id);
+			Manager manager = managerService.getById(mid);
 			return ResponseEntity.ok().body(manager);
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -80,11 +80,15 @@ public class ManagerController {
 	}
 	
 	
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteEmployee(@PathVariable("id") int id) throws InvalidIdException {
-		Manager manager = managerService.getById(id);
-		managerService.deleteManager(manager.getId());
+	@DeleteMapping("/delete/{mid}")
+	public ResponseEntity<?> deleteEmployee(@PathVariable("mid") int mid)  {
+		try {
+		Manager manager = managerService.getById(mid);
+		managerService.deleteManager(mid);
 		return ResponseEntity.ok().body("Manager Record Is deleted");
+	} catch (InvalidIdException e) {
+		return ResponseEntity.badRequest().body(e.getMessage());
 	}
 	
+}
 }

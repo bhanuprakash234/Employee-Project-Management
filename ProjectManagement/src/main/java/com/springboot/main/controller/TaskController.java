@@ -97,21 +97,21 @@ public class TaskController {
 		return taskService.getAllTask(pageable);
 	}
 	
-	@GetMapping("/task/one/{id}")
-	public ResponseEntity<?> getTaskById(@PathVariable("id") int id) {
+	@GetMapping("/task/one/{tid}")
+	public ResponseEntity<?> getById(@PathVariable("tid") int tid) {
 		try {
-			Task task = taskService.getTaskById(id);
+			Task task = taskService.getById(tid);
 			return ResponseEntity.ok().body(task);
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 	
-	@DeleteMapping("/task/delete/{id}")
-	public ResponseEntity<?> deleteTask(@PathVariable("id") int id) {
+	@DeleteMapping("/task/delete/{tid}")
+	public ResponseEntity<?> deleteTask(@PathVariable("tid") int tid) {
 		try {
-			Task task = taskService.getTaskById(id);
-			taskService.deleteTask(task.getId());
+			Task task = taskService.getById(tid);
+			taskService.deleteTask(tid);
 			return ResponseEntity.ok().body("Task deleted");
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());

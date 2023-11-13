@@ -124,37 +124,38 @@ public class EmployeeController {
 		return employeeService.getAllEmployee(pageable);
 	}
 	
-	@GetMapping("/one/{id}")
-	public ResponseEntity<?> getEmployeeById(@PathVariable("id") int id) {
+	@GetMapping("/one/{eid}")
+	public ResponseEntity<?> getEmployeeById(@PathVariable("eid") int eid) {
 		try {
-			Employee employee = employeeService.getEmployeeById(id);
+			Employee employee = employeeService.getById(eid);
 			return ResponseEntity.ok().body(employee);
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteEmployee(@PathVariable("id") int id) {
+	@DeleteMapping("/delete/{eid}")
+	public ResponseEntity<?> deleteEmployee(@PathVariable("eid") int eid) {
 		try {
-			Employee employee = employeeService.getEmployeeById(id);
-			employeeService.deleteEmployee(employee.getId());
+			Employee employee = employeeService.getById(eid);
+			employeeService.deleteEmployee(eid);
 			return ResponseEntity.ok().body("Employee Record deleted");
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 	
-	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateEmployee(@PathVariable("id") int id, 
+	@PutMapping("/update/{eid}")
+	public ResponseEntity<?> updateEmployee(@PathVariable("eid") int eid, 
 			@RequestBody Employee newEmployee) {
 		try {
-			Employee employee = employeeService.getEmployeeById(id);
+			Employee employee = employeeService.getById(eid);
 			if(newEmployee.getName() != null)
 				employee.setName(newEmployee.getName());
 			if(newEmployee.getEmail() != null)
 				employee.setEmail(newEmployee.getEmail());
-			
+			if(newEmployee.getRole() != null)
+				employee.setRole("CUSTOMER");
 			employee = employeeService.insertEmployee(employee);
 			return ResponseEntity.ok().body(employee);
 		} catch (InvalidIdException e) {

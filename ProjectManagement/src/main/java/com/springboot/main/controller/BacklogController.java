@@ -74,21 +74,21 @@ public class BacklogController {
 		return backlogService.getAllBacklog(pageable);
 	}
 	
-	@GetMapping("/one/{id}")
-	public ResponseEntity<?> getBacklogById(@PathVariable("id") int id) {
+	@GetMapping("/one/{bid}")
+	public ResponseEntity<?> getBacklogById(@PathVariable("bid") int bid) {
 		try {
-			Backlog backlog = backlogService.getBacklogById(id);
+			Backlog backlog = backlogService.getBacklogById(bid);
 			return ResponseEntity.ok().body(backlog);
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 	
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteBacklog(@PathVariable("id") int id) {
+	@DeleteMapping("/delete/{bid}")
+	public ResponseEntity<?> deleteBacklog(@PathVariable("bid") int bid) {
 		try {
-			Backlog backlog = backlogService.getBacklogById(id);
-			backlogService.deleteBacklog(backlog.getId());
+			Backlog backlog = backlogService.getBacklogById(bid);
+			backlogService.deleteBacklog(bid);
 			return ResponseEntity.ok().body("Backlog Is deleted");
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
