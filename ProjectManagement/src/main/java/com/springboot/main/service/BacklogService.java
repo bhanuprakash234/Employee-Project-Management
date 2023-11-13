@@ -57,5 +57,15 @@ public class BacklogService {
 		backlogRepository.deleteById(id);
 	}
 
+	public Backlog insertBacklog(Backlog backlog) {
+		return backlogRepository.save(backlog);
+		
+	}
+	
+	
+
+
+
+
 
 }

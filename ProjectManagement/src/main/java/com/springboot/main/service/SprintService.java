@@ -45,4 +45,9 @@ public class SprintService {
 		sprintRepository.deleteById(id);
 	}
 
+	public Sprint insertEmployee(Sprint sprint) {
+		// TODO Auto-generated method stub
+		return sprintRepository.save(sprint);
+	}
+
 }

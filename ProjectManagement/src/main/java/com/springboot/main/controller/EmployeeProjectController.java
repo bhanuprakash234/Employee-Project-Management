@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -71,5 +73,41 @@ public class EmployeeProjectController {
 		
 		Pageable pageable = PageRequest.of(page, size);
 		return employeeProjectService.getAllEmployeeProject(pageable);
+	}
+	@GetMapping("e/one/{id}")
+	public ResponseEntity<?> getEmployeeProjectById(@PathVariable("id") int id) {
+		try {
+			EmployeeProject employeeproject = employeeProjectService.getEmployeeProjectById(id);
+			return ResponseEntity.ok().body(employeeproject);
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> deleteEmployeeProject(@PathVariable("id") int id) {
+		try {
+			EmployeeProject employeeproject = employeeProjectService.getEmployeeProjectById(id);
+			employeeProjectService.deleteEmployeeProject(employeeproject.getId());
+			return ResponseEntity.ok().body("EmployeeProject Record deleted");
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> updateEmployeeProject(@PathVariable("id") int id, 
+			@RequestBody EmployeeProject newEmployeeProject) {
+		try {
+			EmployeeProject employeeproject = employeeProjectService.getEmployeeProjectById(id);
+			if(newEmployeeProject.getStatus() != null)
+				employeeproject.setStatus(newEmployeeProject.getStatus());
+			
+			
+			employeeproject = employeeProjectService.insertEmployee(employeeproject);
+			return ResponseEntity.ok().body(employeeproject);
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 }

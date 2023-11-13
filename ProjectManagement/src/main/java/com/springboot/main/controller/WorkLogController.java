@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,5 +66,40 @@ public class WorkLogController {
 		return worklogService.getAllWorklog(pageable);
 	}
 	
+	@GetMapping("/one/{id}")
+	public ResponseEntity<?> getWorkLogById(@PathVariable("id") int id) {
+		try {
+			WorkLog worklog = worklogService.getWorkLogById(id);
+			return ResponseEntity.ok().body(worklog);
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> deleteWorkLog(@PathVariable("id") int id) {
+		try {
+			WorkLog worklog = worklogService.getWorkLogById(id);
+			worklogService.deleteWorkLog(worklog.getId());
+			return ResponseEntity.ok().body("Worklog Record deleted");
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> updateWorkLog(@PathVariable("id") int id, 
+			@RequestBody WorkLog newWorkLog) {
+		try {
+			WorkLog worklog = worklogService.getWorkLogById(id);
+			if(newWorkLog.getLog() != null)
+				worklog.setLog(newWorkLog.getLog());
+			
+			
+			worklog = worklogService.insertWorkLog(worklog);
+			return ResponseEntity.ok().body(worklog);
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
 }

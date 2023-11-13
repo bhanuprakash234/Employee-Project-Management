@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -85,6 +86,24 @@ public class ManagerController {
 		Manager manager = managerService.getById(id);
 		managerService.deleteManager(manager.getId());
 		return ResponseEntity.ok().body("Manager Record Is deleted");
+	}
+	
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> updateManager(@PathVariable("id") int id, 
+			@RequestBody Manager newManager) {
+		try {
+			Manager manager = managerService.getManagerById(id);
+			if(newManager.getName() != null)
+				manager.setName(newManager.getName());
+			if(newManager.getEmail() != null)
+				manager.setEmail(newManager.getEmail());
+			
+			
+			manager = managerService.insertManager(manager);
+			return ResponseEntity.ok().body(manager);
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 	
 }

@@ -67,6 +67,11 @@ public class TaskService {
 		taskRepository.deleteById(id);
 	}
 
+	public Task insertTask(Task task) {
+		// TODO Auto-generated method stub
+		return taskRepository.save(task);	
+	}
+
 
 
 }

@@ -42,5 +42,9 @@ public class ProjectService {
 	public void deleteProject(int id) {
 		projectRepository.deleteById(id);
 	}
+	public Project insertEmployee(Project project) {
+		return projectRepository.save(project);
+		
+	}
 
 }

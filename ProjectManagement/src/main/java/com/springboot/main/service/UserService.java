@@ -1,6 +1,7 @@
 package com.springboot.main.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.User;
 import com.springboot.main.repository.UserRepository;
 
@@ -38,7 +40,22 @@ public class UserService implements UserDetailsService {
 		return userRepository.findAll(pageable).getContent();
 	}
 	
+	public User getUserById(int id) throws InvalidIdException{
+		Optional<User> optional = userRepository.findById(id);
+		if(!optional.isPresent())
+			throw new InvalidIdException("User Id Invalid");
+		User user = optional.get();
+		return user;
+	}
 	
+	public void deleteUser(int id) {
+		userRepository.deleteById(id);
+	}
+
+	public User insertUser(User user) {
+		// TODO Auto-generated method stub
+		return userRepository.save(user);
+	}
 	
 	
 

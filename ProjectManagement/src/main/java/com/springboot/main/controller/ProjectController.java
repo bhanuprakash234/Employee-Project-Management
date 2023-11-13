@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -77,6 +78,23 @@ public class ProjectController {
 			Project project = projectService.getProjectById(id);
 			projectService.deleteProject(project.getId());
 			return ResponseEntity.ok().body("Project deleted");
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> updateProject(@PathVariable("id") int id, 
+			@RequestBody Project newProject) {
+		try {
+			Project project = projectService.getProjectById(id);
+			if(newProject.getLongDesc() != null)
+				project.setLongDesc(newProject.getLongDesc());
+			if(newProject.getEndDate() != null)
+				project.setEndDate(newProject.getEndDate());
+			
+			project = projectService.insertEmployee(project);
+			return ResponseEntity.ok().body(project);
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}

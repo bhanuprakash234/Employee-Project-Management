@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,6 +60,24 @@ public class SprintController {
 			Sprint sprint = sprintService.getSprintById(id);
 			sprintService.deleteSprint(sprint.getId());
 			return ResponseEntity.ok().body("Sprint deleted");
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> updateSprint(@PathVariable("id") int id, 
+			@RequestBody Sprint newSprint) {
+		try {
+			Sprint sprint = sprintService.getSprintById(id);
+			if(newSprint.getDuration() != null)
+				sprint.setDuration(newSprint.getDuration());
+			if(newSprint.getStatus() != null)
+				sprint.setStatus(newSprint.getStatus());
+			
+			
+			sprint = sprintService.insertEmployee(sprint);
+			return ResponseEntity.ok().body(sprint);
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
