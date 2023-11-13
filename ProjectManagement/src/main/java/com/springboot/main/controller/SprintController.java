@@ -44,21 +44,21 @@ public class SprintController {
 		return sprintService.getAllSprint(pageable);
 	}
 	
-	@GetMapping("/one/{id}")
-	public ResponseEntity<?> getEmployeeById(@PathVariable("id") int id) {
+	@GetMapping("/one/{sid}")
+	public ResponseEntity<?> getEmployeeById(@PathVariable("sid") int sid) {
 		try {
-			Sprint sprint = sprintService.getSprintById(id);
+			Sprint sprint = sprintService.getById(sid);
 			return ResponseEntity.ok().body(sprint);
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 	
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteSprint(@PathVariable("id") int id) {
+	@DeleteMapping("/delete/{sid}")
+	public ResponseEntity<?> deleteSprint(@PathVariable("sid") int sid) {
 		try {
-			Sprint sprint = sprintService.getSprintById(id);
-			sprintService.deleteSprint(sprint.getId());
+			Sprint sprint = sprintService.getById(sid);
+			sprintService.deleteSprint(sid);
 			return ResponseEntity.ok().body("Sprint deleted");
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());

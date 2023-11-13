@@ -37,18 +37,12 @@ public class ManagerService {
 		
 		return managerRepository.findAll(pageable).getContent();
 	}
-	public Manager getManagerById(int id) throws InvalidIdException{
-		Optional<Manager> optional = managerRepository.findById(id);
-		if(!optional.isPresent())
-			throw new InvalidIdException("Manager Id Invalid");
-		Manager manager = optional.get();
-		return manager;
-	}
+	
 
 	
 	
-	public void deleteManager(int id) {
-		managerRepository.deleteById(id);
+	public void deleteManager(int mid) {
+		managerRepository.deleteById(mid);
 	}
 
 	public Manager insertManager(Manager manager) {

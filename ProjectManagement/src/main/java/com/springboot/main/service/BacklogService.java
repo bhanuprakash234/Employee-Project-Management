@@ -45,16 +45,16 @@ public class BacklogService {
 		return backlogRepository.getBacklogByProjectId(pid);
 	}
 	
-	public Backlog getBacklogById(int id) throws InvalidIdException{
-		Optional<Backlog> optional = backlogRepository.findById(id);
+	public Backlog getBacklogById(int bid) throws InvalidIdException{
+		Optional<Backlog> optional = backlogRepository.findById(bid);
 		if(!optional.isPresent())
 			throw new InvalidIdException("Backlog Id Is Invalid");
 		Backlog backlog = optional.get();
 		return backlog;
 	}
 	
-	public void deleteBacklog(int id) {
-		backlogRepository.deleteById(id);
+	public void deleteBacklog(int bid) {
+		backlogRepository.deleteById(bid);
 	}
 
 	public Backlog insertBacklog(Backlog backlog) {

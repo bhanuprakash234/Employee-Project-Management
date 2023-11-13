@@ -63,20 +63,20 @@ public class ProjectController {
 		return projectService.getAllProject(pageable);
 	}
 	
-	@GetMapping("/one/{id}")
-	public ResponseEntity<?> getProjectById(@PathVariable("id") int id) {
+	@GetMapping("/one/{pid}")
+	public ResponseEntity<?> getById(@PathVariable("pid") int pid) {
 		try {
-			Project project = projectService.getProjectById(id);
+			Project project = projectService.getById(pid);
 			return ResponseEntity.ok().body(project);
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteProject(@PathVariable("id") int id) {
+	@DeleteMapping("/delete/{pid}")
+	public ResponseEntity<?> deleteProject(@PathVariable("pid") int pid) {
 		try {
-			Project project = projectService.getProjectById(id);
-			projectService.deleteProject(project.getId());
+			Project project = projectService.getById(pid);
+			projectService.deleteProject(pid);
 			return ResponseEntity.ok().body("Project deleted");
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
