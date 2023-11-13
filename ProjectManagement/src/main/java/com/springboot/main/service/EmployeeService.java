@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.springboot.main.exception.InvalidIdException;
@@ -42,9 +43,9 @@ public class EmployeeService {
 		return employeeRepository.findByManagerId(mid);
 	}
 
-	public List<Employee> getAllEmployee() {
+	public List<Employee> getAllEmployee(Pageable pageable) {
 		
-		return employeeRepository.findAll();
+		return employeeRepository.findAll(pageable).getContent();
 	}
 
 

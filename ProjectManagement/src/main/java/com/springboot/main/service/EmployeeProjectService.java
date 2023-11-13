@@ -3,6 +3,7 @@ package com.springboot.main.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.springboot.main.model.EmployeeProject;
@@ -19,9 +20,9 @@ public class EmployeeProjectService {
 		return employeeProjectRepository.save(employeeProject);
 	}
 
-	public List<EmployeeProject> getAllEmployeeProject() {
+	public List<EmployeeProject> getAllEmployeeProject(Pageable pageable) {
 		
-		return employeeProjectRepository.findAll();
+		return employeeProjectRepository.findAll(pageable).getContent();
 	}
 
 }

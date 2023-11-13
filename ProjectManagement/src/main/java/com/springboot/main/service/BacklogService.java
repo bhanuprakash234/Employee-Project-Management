@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Backlog;
+import com.springboot.main.model.Task;
 import com.springboot.main.repository.BacklogRepository;
 import com.springboot.main.repository.TaskRepository;
 
@@ -31,14 +33,17 @@ public class BacklogService {
 		return optional.get();
 	}
 
-	public Object getBacklogByTaskId(int tid) {
+
+
+	public List<Backlog> getAllBacklog(Pageable pageable) {
 		
-		return taskRepository.findById(tid);
+		return backlogRepository.findAll(pageable).getContent();
 	}
 
-	public List<Backlog> getAllBacklog() {
+	public List<Backlog> getBacklogByProjectId(int pid) {
 		
-		return backlogRepository.findAll();
+		return backlogRepository.getBacklogByProjectId(pid);
 	}
+
 
 }

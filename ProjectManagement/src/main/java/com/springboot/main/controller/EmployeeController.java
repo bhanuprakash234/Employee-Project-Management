@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.main.exception.InvalidIdException;
@@ -97,14 +100,26 @@ public class EmployeeController {
 
 
 	@GetMapping("/manager/{mid}")
-	public List<Employee> getEmployeesByManager(@PathVariable("mid")int mid) {
-		return employeeService.getEmployeesByManager(mid);
+	public ResponseEntity<?> getEmployeesByManager(@PathVariable("mid")int mid) {
+		try {
+			
+		Manager manager = managerService.getById(mid);
+		List<Employee> list =  employeeService.getEmployeesByManager(mid);
+		return ResponseEntity.ok().body(list);
+	}catch(InvalidIdException e) {
+		return ResponseEntity.ok().body(e.getMessage());
+	}
+	
+	
 	}
 
-
 	@GetMapping("/getAll")
-	public List<Employee> getAllEmployee() {
-		return employeeService.getAllEmployee();
+	public List<Employee> getAllEmployee(
+			                             @RequestParam(value="page",required=false,defaultValue="0")Integer page,
+			                             @RequestParam(value="size",required=false,defaultValue="111111111")Integer size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+		return employeeService.getAllEmployee(pageable);
 	}
 
 }

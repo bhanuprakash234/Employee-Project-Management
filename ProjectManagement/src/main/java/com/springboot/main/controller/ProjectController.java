@@ -3,15 +3,19 @@ package com.springboot.main.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.main.exception.InvalidIdException;
+import com.springboot.main.model.Backlog;
 import com.springboot.main.model.Project;
 import com.springboot.main.model.Sprint;
 import com.springboot.main.service.ProjectService;
@@ -47,8 +51,13 @@ public class ProjectController {
 
 }
 	
+
 	@GetMapping("/getAll")
-	public List<Project> getAllProject() {
-		return projectService.getAllProject();
+	public List<Project> getAllProject(
+			                             @RequestParam(value="page",required=false,defaultValue="0")Integer page,
+			                             @RequestParam(value="size",required=false,defaultValue="111111111")Integer size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+		return projectService.getAllProject(pageable);
 	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.springboot.main.exception.InvalidIdException;
@@ -26,9 +27,9 @@ public class ProjectService {
 			throw new InvalidIdException("Pid Invalid");
 		return optional.get();
 	}
-	public List<Project> getAllProject() {
+	public List<Project> getAllProject(Pageable pageable) {
 		
-		return projectRepository.findAll();
+		return projectRepository.findAll(pageable).getContent();
 	}
 
 }

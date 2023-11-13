@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.springboot.main.exception.InvalidIdException;
@@ -28,9 +29,9 @@ public class SprintService {
 		return optional.get();
 	}
 
-	public List<Sprint> GetSprint() {
+	public List<Sprint> getAllSprint(Pageable pageable) {
 		
-		return sprintRepository.findAll();
+		return sprintRepository.findAll(pageable).getContent();
 	}
 
 }
