@@ -33,7 +33,7 @@ import com.springboot.main.service.TaskService;
 import com.springboot.main.service.UserService;
 
 @RestController
-@RequestMapping("/employee")
+
 public class EmployeeController {
 	
 	@Autowired
@@ -56,7 +56,7 @@ public class EmployeeController {
 	@Autowired
 	private ManagerService managerService;
 	
-	@PostMapping("/add/{mid}")
+	@PostMapping("/employee/add/{mid}")//:Adding Employee
 	public ResponseEntity<?> insertEmployee(@PathVariable("mid")int mid,
 			@RequestBody Employee employee) {
 		
@@ -101,7 +101,7 @@ public class EmployeeController {
 	
 
 
-	@GetMapping("/manager/{mid}")
+	@GetMapping("/employee/manager/{mid}")
 	public ResponseEntity<?> getEmployeesByManager(@PathVariable("mid")int mid) {
 		try {
 			
@@ -115,7 +115,7 @@ public class EmployeeController {
 	
 	}
 
-	@GetMapping("/getAll")
+	@GetMapping("/employee/getAll")
 	public List<Employee> getAllEmployee(
 			                             @RequestParam(value="page",required=false,defaultValue="0")Integer page,
 			                             @RequestParam(value="size",required=false,defaultValue="111111111")Integer size) {
@@ -124,7 +124,7 @@ public class EmployeeController {
 		return employeeService.getAllEmployee(pageable);
 	}
 	
-	@GetMapping("/one/{eid}")
+	@GetMapping("/employee/one/{eid}")
 	public ResponseEntity<?> getEmployeeById(@PathVariable("eid") int eid) {
 		try {
 			Employee employee = employeeService.getById(eid);
@@ -134,7 +134,7 @@ public class EmployeeController {
 		}
 	}
 
-	@DeleteMapping("/delete/{eid}")
+	@DeleteMapping("/employee/delete/{eid}")
 	public ResponseEntity<?> deleteEmployee(@PathVariable("eid") int eid) {
 		try {
 			Employee employee = employeeService.getById(eid);
@@ -145,7 +145,7 @@ public class EmployeeController {
 		}
 	}
 	
-	@PutMapping("/update/{eid}")
+	@PutMapping("/employee/update/{eid}")
 	public ResponseEntity<?> updateEmployee(@PathVariable("eid") int eid, 
 			@RequestBody Employee newEmployee) {
 		try {

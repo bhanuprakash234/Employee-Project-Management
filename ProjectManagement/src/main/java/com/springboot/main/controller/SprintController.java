@@ -22,20 +22,20 @@ import com.springboot.main.model.Sprint;
 import com.springboot.main.service.SprintService;
 
 @RestController
-@RequestMapping("/sprint")
+
 public class SprintController {
 	
 	@Autowired
 	private SprintService sprintService;
 	
-	@PostMapping("/add")
+	@PostMapping("/sprint/add")
 	public Sprint CreateSprint(@RequestBody Sprint sprint) {
 		sprint.setStatus("TO DO");
 		return sprintService.insert(sprint);
 	}
 	
 
-	@GetMapping("/getAll")
+	@GetMapping("/sprint/getAll")//:To get all sprints 
 	public List<Sprint> getAllSprint(
 			                             @RequestParam(value="page",required=false,defaultValue="0")Integer page,
 			                             @RequestParam(value="size",required=false,defaultValue="111111111")Integer size) {
@@ -44,7 +44,7 @@ public class SprintController {
 		return sprintService.getAllSprint(pageable);
 	}
 	
-	@GetMapping("/one/{sid}")
+	@GetMapping("/sprint/one/{sid}")
 	public ResponseEntity<?> getEmployeeById(@PathVariable("sid") int sid) {
 		try {
 			Sprint sprint = sprintService.getById(sid);
@@ -54,7 +54,7 @@ public class SprintController {
 		}
 	}
 	
-	@DeleteMapping("/delete/{sid}")
+	@DeleteMapping("/sprint/delete/{sid}")
 	public ResponseEntity<?> deleteSprint(@PathVariable("sid") int sid) {
 		try {
 			Sprint sprint = sprintService.getById(sid);
@@ -65,7 +65,7 @@ public class SprintController {
 		}
 	}
 	
-	@PutMapping("/update/{sid}")
+	@PutMapping("/sprint/update/{sid}")
 	public ResponseEntity<?> updateSprint(@PathVariable("sid") int sid, 
 			@RequestBody Sprint newSprint) {
 		try {

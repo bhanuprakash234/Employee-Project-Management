@@ -26,7 +26,7 @@ import com.springboot.main.service.ProjectService;
 import com.springboot.main.service.TaskService;
 
 @RestController
-@RequestMapping("/backlog")
+
 public class BacklogController {
 	
 	@Autowired
@@ -38,7 +38,7 @@ public class BacklogController {
 	@Autowired
 	private TaskService taskService;
 
-	@PostMapping("/add/{pid}")
+	@PostMapping("/backlog/add/{pid}")
 	public ResponseEntity<?> CreateBacklog(@PathVariable("pid")int pid,
 			                  @RequestBody Backlog backlog) {
 	try {	
@@ -52,7 +52,7 @@ public class BacklogController {
 		return ResponseEntity.badRequest().body(e.getMessage());
 	}
 }
-	@GetMapping("/{pid}")
+	@GetMapping("/backlog/{pid}")//:To get backlog by ProjectId
 	public ResponseEntity<?> getBacklogByProjectId(@PathVariable("pid")int pid) {
 		
 		try {
@@ -66,7 +66,7 @@ public class BacklogController {
 		}
 	}
 	
-	@GetMapping("/getAll")
+	@GetMapping("/backlog/getAll")
 	public List<Backlog> getAllEmployee(
 			                             @RequestParam(value="page",required=false,defaultValue="0")Integer page,
 			                             @RequestParam(value="size",required=false,defaultValue="111111111")Integer size) {
@@ -75,7 +75,7 @@ public class BacklogController {
 		return backlogService.getAllBacklog(pageable);
 	}
 	
-	@GetMapping("/one/{bid}")
+	@GetMapping("/backlog/one/{bid}")
 	public ResponseEntity<?> getBacklogById(@PathVariable("bid") int bid) {
 		try {
 			Backlog backlog = backlogService.getBacklogById(bid);
@@ -85,7 +85,7 @@ public class BacklogController {
 		}
 	}
 	
-	@DeleteMapping("/delete/{bid}")
+	@DeleteMapping("/backlog/delete/{bid}")
 	public ResponseEntity<?> deleteBacklog(@PathVariable("bid") int bid) {
 		try {
 			Backlog backlog = backlogService.getBacklogById(bid);
@@ -96,7 +96,7 @@ public class BacklogController {
 		}
 	}
 	
-	@PutMapping("/update/{id}")
+	@PutMapping("/backlog/update/{id}")
 	public ResponseEntity<?> updateBacklog(@PathVariable("id") int id, 
 			@RequestBody Backlog newBacklog) {
 		try {

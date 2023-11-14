@@ -23,7 +23,7 @@ import com.springboot.main.service.TaskService;
 import com.springboot.main.service.WorklogService;
 
 @RestController
-@RequestMapping("/worklog")
+
 public class WorkLogController {
 	
 	@Autowired
@@ -32,7 +32,7 @@ public class WorkLogController {
 	@Autowired
 	private WorklogService worklogService;
 	
-	@PostMapping("/add/{tid}")
+	@PostMapping("/worklog/add/{tid}")//:To add a work log/comment
 	public ResponseEntity<?> InsertWorklog(@PathVariable("tid")int tid,
 			                  @RequestBody WorkLog worklog) {
 		try {
@@ -44,7 +44,7 @@ public class WorkLogController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	@GetMapping("/task/{tid}")
+	@GetMapping("/worklog/task/{tid}")//:To get a work log/comment based on a task
 	public ResponseEntity<?> getWorkLogsAndEmployeeWithTaskByTaskId(@PathVariable("tid")int tid){
 		
 		try {
@@ -57,7 +57,7 @@ public class WorkLogController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	@GetMapping("/getAll")
+	@GetMapping("/worklog/getAll")
 	public List<WorkLog> getAllWorklog(
 			                             @RequestParam(value="page",required=false,defaultValue="0")Integer page,
 			                             @RequestParam(value="size",required=false,defaultValue="111111111")Integer size) {
@@ -66,7 +66,7 @@ public class WorkLogController {
 		return worklogService.getAllWorklog(pageable);
 	}
 	
-	@GetMapping("/one/{id}")
+	@GetMapping("/worklog/one/{id}")
 	public ResponseEntity<?> getWorkLogById(@PathVariable("id") int id) {
 		try {
 			WorkLog worklog = worklogService.getWorkLogById(id);
@@ -76,7 +76,7 @@ public class WorkLogController {
 		}
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/worklog/delete/{id}")
 	public ResponseEntity<?> deleteWorkLog(@PathVariable("id") int id) {
 		try {
 			WorkLog worklog = worklogService.getWorkLogById(id);
@@ -86,7 +86,7 @@ public class WorkLogController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	@PutMapping("/update/{id}")
+	@PutMapping("/worklog/update/{id}")
 	public ResponseEntity<?> updateWorkLog(@PathVariable("id") int id, 
 			@RequestBody WorkLog newWorkLog) {
 		try {

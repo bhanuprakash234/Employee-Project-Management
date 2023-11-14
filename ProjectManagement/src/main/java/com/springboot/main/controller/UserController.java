@@ -21,13 +21,13 @@ import com.springboot.main.model.User;
 import com.springboot.main.service.UserService;
 
 @RestController
-@RequestMapping("/user")
+
 public class UserController {
 	
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping("/getAll")
+	@GetMapping("/user/getAll")
 	public List<User> getAllUser(
 			                             @RequestParam(value="page",required=false,defaultValue="0")Integer page,
 			                             @RequestParam(value="size",required=false,defaultValue="111111111")Integer size) {
@@ -36,7 +36,7 @@ public class UserController {
 		return userService.getAllUser(pageable);
 	}
 	
-	@GetMapping("/one/{id}")
+	@GetMapping("/user/one/{id}")
 	public ResponseEntity<?> getUserById(@PathVariable("id") int id) {
 		try {
 			User user = userService.getUserById(id);
@@ -46,7 +46,7 @@ public class UserController {
 		}
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/user/delete/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable("id") int id) {
 		try {
 			User user = userService.getUserById(id);
@@ -56,7 +56,7 @@ public class UserController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	@PutMapping("/update/{id}")
+	@PutMapping("/user/update/{id}")
 	public ResponseEntity<?> updateUser(@PathVariable("id") int id, 
 			@RequestBody User newUser) {
 		try {

@@ -25,7 +25,7 @@ import com.springboot.main.service.EmployeeService;
 import com.springboot.main.service.ProjectService;
 
 @RestController
-@RequestMapping("/employeeproject")
+
 public class EmployeeProjectController {
 	
 	@Autowired
@@ -37,7 +37,7 @@ public class EmployeeProjectController {
 	@Autowired
 	private EmployeeProjectService employeeProjectService;
 
-	@PostMapping("/add/{eid}/{pid}")
+	@PostMapping("/employeeproject/add/{eid}/{pid}")
 	public ResponseEntity<?> assignProject(@PathVariable("eid") int eid,@PathVariable("pid")int pid,
 			                                @RequestBody EmployeeProject employeeProject){
 			                                            
@@ -66,7 +66,7 @@ public class EmployeeProjectController {
 		}
 	}
 	
-	@GetMapping("/getAll")
+	@GetMapping("/employeeproject/getAll")
 	public List<EmployeeProject> getAllEmployeeProject(
 			                             @RequestParam(value="page",required=false,defaultValue="0")Integer page,
 			                             @RequestParam(value="size",required=false,defaultValue="111111111")Integer size) {
@@ -74,7 +74,7 @@ public class EmployeeProjectController {
 		Pageable pageable = PageRequest.of(page, size);
 		return employeeProjectService.getAllEmployeeProject(pageable);
 	}
-	@GetMapping("e/one/{id}")
+	@GetMapping("/employeeproject/one/{id}")
 	public ResponseEntity<?> getEmployeeProjectById(@PathVariable("id") int id) {
 		try {
 			EmployeeProject employeeproject = employeeProjectService.getEmployeeProjectById(id);
@@ -84,7 +84,7 @@ public class EmployeeProjectController {
 		}
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/employeeproject/delete/{id}")
 	public ResponseEntity<?> deleteEmployeeProject(@PathVariable("id") int id) {
 		try {
 			EmployeeProject employeeproject = employeeProjectService.getEmployeeProjectById(id);
@@ -95,7 +95,7 @@ public class EmployeeProjectController {
 		}
 	}
 	
-	@PutMapping("/update/{id}")
+	@PutMapping("/employeeproject/update/{id}")
 	public ResponseEntity<?> updateEmployeeProject(@PathVariable("id") int id, 
 			@RequestBody EmployeeProject newEmployeeProject) {
 		try {

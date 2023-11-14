@@ -26,7 +26,7 @@ import com.springboot.main.service.ManagerService;
 import com.springboot.main.service.UserService;
 
 @RestController
-@RequestMapping("/manager")
+
 public class ManagerController {
 	
 	@Autowired
@@ -39,7 +39,7 @@ public class ManagerController {
 	private PasswordEncoder passwordEncoder;
 	
 	
-	@PostMapping("/add")
+	@PostMapping("/manager/add")//:Adding Manager
 	public Manager insertManager(@RequestBody Manager manager) {
 		//save user info in db
 		User user=manager.getUser();
@@ -61,7 +61,7 @@ public class ManagerController {
 
 }
 
-	@GetMapping("/getAll")
+	@GetMapping("/manager/getAll")
 	public List<Manager> getAllManager(
 			                             @RequestParam(value="page",required=false,defaultValue="0")Integer page,
 			                             @RequestParam(value="size",required=false,defaultValue="111111111")Integer size) {
@@ -70,7 +70,7 @@ public class ManagerController {
 		return managerService.getAllManager(pageable);
 	}
 	
-	@GetMapping("/one/{mid}")
+	@GetMapping("/manager/one/{mid}")
 	public ResponseEntity<?> getManagerById(@PathVariable("mid") int mid) {
 		try {
 			Manager manager = managerService.getById(mid);
@@ -81,7 +81,7 @@ public class ManagerController {
 	}
 	
 	
-	@DeleteMapping("/delete/{mid}")
+	@DeleteMapping("/manager/delete/{mid}")
 	public ResponseEntity<?> deleteEmployee(@PathVariable("mid") int mid)  {
 		try {
 		Manager manager = managerService.getById(mid);
@@ -92,7 +92,7 @@ public class ManagerController {
 	}
 	}
 
-	@PutMapping("/update/{mid}")
+	@PutMapping("/manager/update/{mid}")
 	public ResponseEntity<?> updateManager(@PathVariable("mid") int mid, 
 			@RequestBody Manager newManager) {
 		try {

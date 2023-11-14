@@ -26,7 +26,7 @@ import com.springboot.main.service.SprintService;
 
 
 @RestController
-@RequestMapping("/project")
+
 public class ProjectController {
 	
 	@Autowired
@@ -35,7 +35,7 @@ public class ProjectController {
 	@Autowired
 	private ProjectService projectService;
 	
-	@PostMapping("/add/{sid}")
+	@PostMapping("/project/add/{sid}")
 	public ResponseEntity<?> insertProject(@PathVariable("sid")int sid,
 			@RequestBody Project project){
 	try{
@@ -54,7 +54,7 @@ public class ProjectController {
 }
 	
 
-	@GetMapping("/getAll")
+	@GetMapping("/project/getAll")
 	public List<Project> getAllProject(
 			                             @RequestParam(value="page",required=false,defaultValue="0")Integer page,
 			                             @RequestParam(value="size",required=false,defaultValue="111111111")Integer size) {
@@ -63,7 +63,7 @@ public class ProjectController {
 		return projectService.getAllProject(pageable);
 	}
 	
-	@GetMapping("/one/{pid}")
+	@GetMapping("/project/one/{pid}")
 	public ResponseEntity<?> getById(@PathVariable("pid") int pid) {
 		try {
 			Project project = projectService.getById(pid);
@@ -72,7 +72,7 @@ public class ProjectController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	@DeleteMapping("/delete/{pid}")
+	@DeleteMapping("/project/delete/{pid}")
 	public ResponseEntity<?> deleteProject(@PathVariable("pid") int pid) {
 		try {
 			Project project = projectService.getById(pid);
@@ -83,7 +83,7 @@ public class ProjectController {
 		}
 	}
 	
-	@PutMapping("/update/{pid}")
+	@PutMapping("/project/update/{pid}")
 	public ResponseEntity<?> updateProject(@PathVariable("pid") int pid, 
 			@RequestBody Project newProject) {
 		try {

@@ -62,7 +62,7 @@ public class TaskController {
 		 return ResponseEntity.badRequest().body(e.getMessage());
 	}
 }
-	@GetMapping("/task/{bid}")
+	@GetMapping("/task/{bid}")//:To get all tasks by backlogId
 	public ResponseEntity<?> getTaskwithWorkLogId(@PathVariable("bid")int bid) {
 		
 		try {
@@ -77,7 +77,7 @@ public class TaskController {
 	
 	}
 
-	@GetMapping("/task/employee/{eid}")
+	@GetMapping("/task/employee/{eid}")//:To get a task by employeeId
 	public ResponseEntity<?> getAllTasksWithEmployeeId(@PathVariable("eid")int eid){
 		try {
 			Employee employee = employeeService.getById(eid);
