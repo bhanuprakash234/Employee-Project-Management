@@ -21,8 +21,8 @@ public class Employee {
 	private String name;
 	private String email;
 	
-	
-	private String role;
+	@Enumerated(EnumType.STRING)
+	private Role role;
 	
 	@Column(name = "job_title")
 	private String jobTitle;
@@ -54,10 +54,11 @@ public class Employee {
 	}
 	
 	
-	public String getRole() {
+	
+	public Role getRole() {
 		return role;
 	}
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 	public String getJobTitle() {

@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.springboot.main.enums.Status;
+
 @Entity
 @Table(name = "employee_project")
 public class EmployeeProject {
@@ -20,16 +22,18 @@ public class EmployeeProject {
 	@ManyToOne
 	private Project project;
 	
-	private String status;
+	private Status status;
 	
     
 	
 
-	public String getStatus() {
+	
+
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 

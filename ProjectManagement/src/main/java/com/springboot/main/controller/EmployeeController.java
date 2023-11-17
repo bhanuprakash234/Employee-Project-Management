@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.main.enums.Role;
 import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Employee;
 import com.springboot.main.model.EmployeeProject;
@@ -75,8 +76,8 @@ public class EmployeeController {
 		String encodedPassword = passwordEncoder.encode(passwordPlain);
 		user.setPassword(encodedPassword);
 		
-		user.setRole("EMPLOYEE");
-		employee.setRole("EMPLOYEE");
+		user.setRole(Role.EMPLOYEE);
+		employee.setRole(Role.EMPLOYEE);
 		employee.setEmail(user.getEmail());
 		Manager manager = managerService.getById(mid);
 		employee.setManager(manager);
@@ -155,7 +156,7 @@ public class EmployeeController {
 			if(newEmployee.getEmail() != null)
 				employee.setEmail(newEmployee.getEmail());
 			if(newEmployee.getRole() != null)
-				employee.setRole("CUSTOMER");
+				employee.setRole(Role.EMPLOYEE);
 			employee = employeeService.insertEmployee(employee);
 			return ResponseEntity.ok().body(employee);
 		} catch (InvalidIdException e) {

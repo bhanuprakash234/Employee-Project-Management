@@ -4,10 +4,14 @@ import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+import com.springboot.main.enums.Status;
 
 @Entity
 public class Project {
@@ -25,11 +29,10 @@ public class Project {
 	@Column(name="end_date")
 	private Date endDate;
 	
+	@Enumerated(EnumType.STRING)
+	private Status status;
 	
-	private String status;
-	
-	@ManyToOne
-	private Sprint sprint;
+
 
 	public int getId() {
 		return id;
@@ -73,25 +76,19 @@ public class Project {
 		this.endDate = endDate;
 	}
 
-
-
-
-
-	public String getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 
-	public Sprint getSprint() {
-		return sprint;
-	}
 
-	public void setSprint(Sprint sprint) {
-		this.sprint = sprint;
-	}
+
+
+
+	
 	
 
 }

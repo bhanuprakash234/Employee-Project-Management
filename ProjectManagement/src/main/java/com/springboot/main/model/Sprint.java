@@ -1,9 +1,14 @@
 package com.springboot.main.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import com.springboot.main.enums.Status;
 
 @Entity
 public class Sprint {
@@ -13,8 +18,12 @@ private int id;
 private String title;
 private String duration;
 
+@Enumerated(EnumType.STRING)
+private Status status;
 
-private String status;
+@ManyToOne
+private Project project;
+
 public int getId() {
 	return id;
 }
@@ -35,11 +44,18 @@ public String getDuration() {
 public void setDuration(String duration) {
 	this.duration = duration;
 }
-public String getStatus() {
+
+public Status getStatus() {
 	return status;
 }
-public void setStatus(String status) {
+public void setStatus(Status status) {
 	this.status = status;
+}
+public Project getProject() {
+	return project;
+}
+public void setProject(Project project) {
+	this.project = project;
 }
 
 

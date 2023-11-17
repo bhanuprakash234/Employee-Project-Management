@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.main.enums.Status;
 import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Backlog;
+import com.springboot.main.model.Project;
 import com.springboot.main.model.Sprint;
+import com.springboot.main.service.ProjectService;
 import com.springboot.main.service.SprintService;
 
 @RestController
@@ -28,10 +31,21 @@ public class SprintController {
 	@Autowired
 	private SprintService sprintService;
 	
-	@PostMapping("/sprint/add")
-	public Sprint CreateSprint(@RequestBody Sprint sprint) {
-		sprint.setStatus("TO DO");
-		return sprintService.insert(sprint);
+	@Autowired
+	private ProjectService projectService;
+	
+	@PostMapping("/sprint/add/{pid}")
+	public ResponseEntity<?> CreateSprint(@PathVariable("pid") int pid,@RequestBody Sprint sprint) {
+		
+		try {
+			Project project = projectService.getById(pid);
+			sprint.setProject(project);
+		sprint.setStatus(Status.TO_DO);
+		sprint =  sprintService.insert(sprint);
+		return ResponseEntity.ok().body(sprint);
+	}catch (InvalidIdException e) {
+		return ResponseEntity.badRequest().body(e.getMessage());
+	}
 	}
 	
 
@@ -49,6 +63,16 @@ public class SprintController {
 		try {
 			Sprint sprint = sprintService.getById(sid);
 			return ResponseEntity.ok().body(sprint);
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	@GetMapping("/sprint/{pid}")
+	public ResponseEntity<?> getSprintsByProjectId(@PathVariable("pid") int pid) {
+		try {
+			Project project = projectService.getById(pid);
+			List<Sprint> list = sprintService.getSprintsByProjectId(pid);
+			return ResponseEntity.ok().body(list);
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
@@ -74,7 +98,7 @@ public class SprintController {
 				sprint.setDuration(newSprint.getDuration());
 			if(newSprint.getStatus() != null)
 				sprint.setStatus(newSprint.getStatus());
-			
+		
 			
 			sprint = sprintService.insertEmployee(sprint);
 			return ResponseEntity.ok().body(sprint);

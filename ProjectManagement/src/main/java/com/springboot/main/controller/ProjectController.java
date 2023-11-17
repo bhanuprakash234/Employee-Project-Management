@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.main.enums.Role;
+import com.springboot.main.enums.Status;
 import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Backlog;
 import com.springboot.main.model.Project;
@@ -29,27 +31,22 @@ import com.springboot.main.service.SprintService;
 
 public class ProjectController {
 	
-	@Autowired
-	private SprintService sprintService;
+
 	
 	@Autowired
 	private ProjectService projectService;
 	
-	@PostMapping("/project/add/{sid}")
-	public ResponseEntity<?> insertProject(@PathVariable("sid")int sid,
+	@PostMapping("/project/add/")
+	public  void insertProject(
 			@RequestBody Project project){
-	try{
+	
 		
-		Sprint sprint = sprintService.getById(sid);
 		
-		project.setSprint(sprint);
-		project.setStatus("TO DO");
+		
+	
+		project.setStatus(Status.TO_DO);
 		project = projectService.insert(project);
-		return ResponseEntity.ok().body(project);
-	} catch(InvalidIdException e) {
-		
-		return ResponseEntity.badRequest().body(e.getMessage());
-	}
+	
 
 }
 	
@@ -92,7 +89,8 @@ public class ProjectController {
 				project.setLongDesc(newProject.getLongDesc());
 			if(newProject.getEndDate() != null)
 				project.setEndDate(newProject.getEndDate());
-			
+			if(newProject.getStatus() != null)
+				project.setStatus(Status.TO_DO);
 			project = projectService.insertEmployee(project);
 			return ResponseEntity.ok().body(project);
 		} catch (InvalidIdException e) {

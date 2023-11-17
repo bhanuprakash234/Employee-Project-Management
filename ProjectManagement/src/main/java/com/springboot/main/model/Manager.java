@@ -2,10 +2,14 @@ package com.springboot.main.model;
 
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+
+import com.springboot.main.enums.Role;
 
 @Entity
 public class Manager {
@@ -16,8 +20,8 @@ public class Manager {
 	private String name;
 	private String email;
 	
-	
-	private String role;
+	@Enumerated(EnumType.STRING)
+	private Role role;
 	
 	@OneToOne
 	private User user;
@@ -40,10 +44,11 @@ public class Manager {
 		this.email = email;
 	}
 
-	public String getRole() {
+	
+	public Role getRole() {
 		return role;
 	}
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 	public User getUser() {

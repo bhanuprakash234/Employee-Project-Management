@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.main.enums.Role;
 import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Backlog;
 import com.springboot.main.model.Employee;
@@ -49,8 +50,8 @@ public class ManagerController {
 		String encodedPassword = passwordEncoder.encode(passwordPlain);
 		user.setPassword(encodedPassword);
 		
-		user.setRole("MANAGER");
-		manager.setRole("MANAGER");
+		user.setRole(Role.MANAGER);
+		manager.setRole(Role.MANAGER);
 		manager.setEmail(user.getEmail());
 		user = userService.insert(user);
 		// attach the saved user(in step 1)
@@ -102,7 +103,7 @@ public class ManagerController {
 			if(newManager.getEmail() != null)
 				manager.setEmail(newManager.getEmail());
 			if(newManager.getRole() != null)
-				manager.setRole("MANAGER");
+				manager.setRole(Role.MANAGER);
 			
 			manager = managerService.insertManager(manager);
 			return ResponseEntity.ok().body(manager);
