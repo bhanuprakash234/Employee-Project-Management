@@ -32,6 +32,11 @@ public class Project {
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	
+<<<<<<< HEAD
+=======
+	private String status;
+	
+>>>>>>> bde90b3b5921ecaea197ac42d3823e001bd5314a
 
 
 	public int getId() {
@@ -76,7 +81,12 @@ public class Project {
 		this.endDate = endDate;
 	}
 
+<<<<<<< HEAD
 	public Status getStatus() {
+=======
+
+	public String getStatus() {
+>>>>>>> bde90b3b5921ecaea197ac42d3823e001bd5314a
 		return status;
 	}
 
@@ -84,10 +94,13 @@ public class Project {
 		this.status = status;
 	}
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> bde90b3b5921ecaea197ac42d3823e001bd5314a
 	
 	
 
