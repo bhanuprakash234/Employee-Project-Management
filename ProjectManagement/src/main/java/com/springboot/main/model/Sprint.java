@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Sprint {
@@ -15,6 +16,10 @@ private String duration;
 
 
 private String status;
+
+@ManyToOne
+private Project project;
+
 public int getId() {
 	return id;
 }
@@ -28,7 +33,6 @@ public void setTitle(String title) {
 	this.title = title;
 }
 
-
 public String getDuration() {
 	return duration;
 }
@@ -41,9 +45,11 @@ public String getStatus() {
 public void setStatus(String status) {
 	this.status = status;
 }
-
-
-
-
+public Project getProject() {
+	return project;
+}
+public void setProject(Project project) {
+	this.project = project;
+}
 
 }

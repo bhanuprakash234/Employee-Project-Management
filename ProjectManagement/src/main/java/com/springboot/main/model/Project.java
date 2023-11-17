@@ -28,8 +28,7 @@ public class Project {
 	
 	private String status;
 	
-	@ManyToOne
-	private Sprint sprint;
+
 
 	public int getId() {
 		return id;
@@ -74,9 +73,6 @@ public class Project {
 	}
 
 
-
-
-
 	public String getStatus() {
 		return status;
 	}
@@ -85,13 +81,7 @@ public class Project {
 		this.status = status;
 	}
 
-	public Sprint getSprint() {
-		return sprint;
-	}
-
-	public void setSprint(Sprint sprint) {
-		this.sprint = sprint;
-	}
+	
 	
 
 }

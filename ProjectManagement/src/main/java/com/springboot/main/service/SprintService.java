@@ -43,4 +43,9 @@ public class SprintService {
 		return sprintRepository.save(sprint);
 	}
 
+	public List<Sprint> getSprintsByProjectId(int pid) {
+		
+		return sprintRepository.getSprintsByProjectId(pid);
+	}
+
 }
