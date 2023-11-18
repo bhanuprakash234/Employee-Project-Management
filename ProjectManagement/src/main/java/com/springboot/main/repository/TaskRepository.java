@@ -12,7 +12,27 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 
 	
 
-	List<Task> findByBacklogId(int bid);
+	
+
+
+
+	List<Task> findByTitle(String title);
+
+
+
+
+
+
+
+	List<Task> getBySprintId(int sid);
+
+
+
+
+
+
+
+	
 
 	
 

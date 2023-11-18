@@ -1,5 +1,6 @@
 package com.springboot.main.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class WorkLogController {
 		try {
 			Task task = taskService.getById(tid);
 			worklog.setTask(task);
+			worklog.setLogDate(LocalDate.now());
 		worklog = worklogService.insert(worklog);
 		return ResponseEntity.ok().body(worklog);
 		}catch(InvalidIdException e) {

@@ -16,14 +16,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.main.enums.Status;
+import com.springboot.main.exception.IllegalArgumentException;
 import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Backlog;
 import com.springboot.main.model.Employee;
+import com.springboot.main.model.Sprint;
 import com.springboot.main.model.Task;
 import com.springboot.main.model.WorkLog;
 import com.springboot.main.repository.TaskRepository;
 import com.springboot.main.service.BacklogService;
 import com.springboot.main.service.EmployeeService;
+import com.springboot.main.service.SprintService;
 import com.springboot.main.service.TaskService;
 import com.springboot.main.service.WorklogService;
 
@@ -43,18 +47,24 @@ public class TaskController {
 	@Autowired
 	private WorklogService worklogService;
 
-	@PostMapping("task/add/{bid}/{eid}")
-	public ResponseEntity<?> CreateTask(@PathVariable("bid")int bid,
+	@Autowired
+	private SprintService sprintService;
+	
+	@PostMapping("task/add/{sid}/{eid}")
+	public ResponseEntity<?> CreateTask(
 			          @PathVariable("eid")int eid,
+			          @PathVariable("sid")int sid,
 		          @RequestBody Task task) {
 		
 		try {
-		Backlog backlog = backlogService.getById(bid);
 		
+		Sprint sprint = sprintService.getById(sid);
 		Employee employee = employeeService.getById(eid);
 		
-		task.setBacklog(backlog);
+		
 		task.setEmployee(employee);
+		task.setSprint(sprint);
+		task.setStatus(Status.TO_DO);
 		
 		task = taskService.insert(task);
 		  return ResponseEntity.ok().body(task);
@@ -62,19 +72,15 @@ public class TaskController {
 		 return ResponseEntity.badRequest().body(e.getMessage());
 	}
 }
-	@GetMapping("/task/{bid}")//:To get all tasks by backlogId
-	public ResponseEntity<?> getTaskwithWorkLogId(@PathVariable("bid")int bid) {
-		
+	@GetMapping("/task/{sid}")
+	public ResponseEntity<?> getTasksBySprintId(@PathVariable("sid") int sid) {
 		try {
-			Backlog backlog = backlogService.getById(bid);
-		
-		List<Task> list =taskService.getTaskwithBacklogId(bid);
-		return ResponseEntity.ok().body(list);
-		
-		}catch(InvalidIdException e) {
-			 return ResponseEntity.badRequest().body(e.getMessage());
-		}
-	
+			Sprint sprint = sprintService.getById(sid);
+			List<Task> list = taskService.getTasksBySprintId(sid);
+			return ResponseEntity.ok().body(list);
+	}catch(InvalidIdException e) {
+		 return ResponseEntity.badRequest().body(e.getMessage());
+	}
 	}
 
 	@GetMapping("/task/employee/{eid}")//:To get a task by employeeId
@@ -106,6 +112,13 @@ public class TaskController {
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
+	}
+	@GetMapping("/search/taskName")
+	public ResponseEntity<?> getByTaskTitle(@RequestParam String title) {
+		
+			List<Task> list = taskService.getByTaskTitle(title);
+			return ResponseEntity.ok().body(list);
+		
 	}
 	
 	@DeleteMapping("/task/delete/{tid}")

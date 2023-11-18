@@ -51,10 +51,6 @@ public class TaskService {
 		return taskRepository.findAll(pageable).getContent();
 	}
 
-	public List<Task> getTaskwithBacklogId(int bid) {
-		// TODO Auto-generated method stub
-		return taskRepository.findByBacklogId(bid);
-	}
 	
 	
 	public void deleteTask(int tid) {
@@ -66,6 +62,17 @@ public class TaskService {
 		return taskRepository.save(task);	
 	}
 
+	public List<Task> getByTaskTitle(String title) {
+		
+		 return taskRepository.findByTitle(title);
+	}
+
+	public List<Task> getTasksBySprintId(int sid) {
+		
+		return taskRepository.getBySprintId(sid);
+	}
+
+	
 
 
 }

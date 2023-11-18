@@ -19,9 +19,13 @@ public class NotificationService {
 		return notificationRepository.save(notification);
 	}
 
+
+
+	
+
 	public List<Notification> ReceiveNotificationsByEmployeeId(int eid) {
 		
-		return notificationRepository.findByEmployeeId(eid);
+		return notificationRepository.getByEmployeeId(eid);
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.springboot.main.model;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ public class Project {
 	private String longDesc;
 	
 	@Column(name="start_date")
-	private Date startDate;
+	private LocalDate startDate;
 	
 	@Column(name="end_date")
 	private Date endDate;
@@ -32,12 +33,9 @@ public class Project {
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	
-<<<<<<< HEAD
-=======
-	private String status;
-	
->>>>>>> bde90b3b5921ecaea197ac42d3823e001bd5314a
 
+	
+	
 
 	public int getId() {
 		return id;
@@ -65,11 +63,13 @@ public class Project {
 		this.longDesc = longDesc;
 	}
 
-	public Date getStartDate() {
+	
+
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
@@ -81,27 +81,15 @@ public class Project {
 		this.endDate = endDate;
 	}
 
-<<<<<<< HEAD
-	public Status getStatus() {
-=======
-
-	public String getStatus() {
->>>>>>> bde90b3b5921ecaea197ac42d3823e001bd5314a
-		return status;
-	}
 
 	public void setStatus(Status status) {
 		this.status = status;
 	}
 
-<<<<<<< HEAD
+	public Status getStatus() {
+		return status;
+	}
 
 
-
-
-=======
->>>>>>> bde90b3b5921ecaea197ac42d3823e001bd5314a
-	
-	
 
 }

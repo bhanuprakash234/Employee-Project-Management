@@ -15,9 +15,11 @@ import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Employee;
 import com.springboot.main.model.Manager;
 import com.springboot.main.model.Notification;
+import com.springboot.main.model.Task;
 import com.springboot.main.service.EmployeeService;
 import com.springboot.main.service.ManagerService;
 import com.springboot.main.service.NotificationService;
+import com.springboot.main.service.TaskService;
 
 @RestController
 public class NotificationController {
@@ -31,19 +33,25 @@ public class NotificationController {
 	@Autowired
 	private NotificationService notificationService;
 	
-	@PostMapping("/sendNotification/{mid}/{eid}")
-	public ResponseEntity<?> SendNotification(@PathVariable("mid") int mid,
+	@Autowired
+	private TaskService taskService;
+	
+	@PostMapping("/sendNotification/{eid}")
+	public ResponseEntity<?> SendNotification(
+			                    
 			                     @PathVariable("eid") int eid,
 			                     @RequestBody Notification notification){
 	try {
 		
-		Manager manager = managerService.getById(mid);
 		
+		
+		
+
 		Employee employee = employeeService.getById(eid);
 		
-		notification.setManager(manager);
-		
 		notification.setEmployee(employee);
+		
+		
 		
 		notification.setDate(LocalDate.now());
 		

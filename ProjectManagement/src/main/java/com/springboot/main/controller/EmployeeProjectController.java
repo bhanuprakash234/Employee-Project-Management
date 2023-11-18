@@ -100,10 +100,10 @@ public class EmployeeProjectController {
 			@RequestBody EmployeeProject newEmployeeProject) {
 		try {
 			EmployeeProject employeeproject = employeeProjectService.getEmployeeProjectById(id);
-			if(newEmployeeProject.getStatus() != null)
-				employeeproject.setStatus(newEmployeeProject.getStatus());
 			
 			
+			if(newEmployeeProject.getBudget() != 0)
+				employeeproject.setBudget(newEmployeeProject.getBudget());
 			employeeproject = employeeProjectService.insertEmployee(employeeproject);
 			return ResponseEntity.ok().body(employeeproject);
 		} catch (InvalidIdException e) {

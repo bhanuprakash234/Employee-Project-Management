@@ -8,6 +8,8 @@ import com.springboot.main.model.Sprint;
 
 public interface SprintRepository extends JpaRepository<Sprint, Integer>{
 
-	List<Sprint> getSprintsByProjectId(int pid);
+	List<Sprint> getByBacklogId(int bid);
+
+	
 
 }

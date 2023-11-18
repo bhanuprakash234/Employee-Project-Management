@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.springboot.main.enums.Status;
+
 @Entity
 public class Task {
 	
@@ -23,13 +25,24 @@ public class Task {
 	private int noOfDays;
 	
 	@Enumerated(EnumType.STRING)
-	private String status;
+	private Status status;
 	
-	@ManyToOne
-	private Backlog backlog;
+	
 	
 	@ManyToOne
 	private Employee employee;
+	
+	@ManyToOne
+	private Sprint sprint;
+
+	
+	public Sprint getSprint() {
+		return sprint;
+	}
+
+	public void setSprint(Sprint sprint) {
+		this.sprint = sprint;
+	}
 
 	public int getId() {
 		return id;
@@ -64,20 +77,15 @@ public class Task {
 		this.noOfDays = noOfDays;
 	}
 
-	public Backlog getBacklog() {
-		return backlog;
-	}
-
-	public void setBacklog(Backlog backlog) {
-		this.backlog = backlog;
-	}
-
 	
-	public String getStatus() {
+	
+	
+
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 

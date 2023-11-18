@@ -16,15 +16,26 @@ public class Notification {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	private Long message;
+	private String message;
 	
 	private LocalDate date;
 	
-	@ManyToOne
-	private Manager manager;
+	
+	
 	
 	@ManyToOne
 	private Employee employee;
+	
+
+	
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
 
 	public int getId() {
 		return id;
@@ -34,11 +45,13 @@ public class Notification {
 		this.id = id;
 	}
 
-	public Long getMessage() {
+	
+
+	public String getMessage() {
 		return message;
 	}
 
-	public void setMessage(Long message) {
+	public void setMessage(String message) {
 		this.message = message;
 	}
 
@@ -50,21 +63,7 @@ public class Notification {
 		this.date = date;
 	}
 
-	public Manager getManager() {
-		return manager;
-	}
-
-	public void setManager(Manager manager) {
-		this.manager = manager;
-	}
-
-	public Employee getEmployee() {
-		return employee;
-	}
-
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
-	}
+	
 	
 
 }

@@ -43,9 +43,10 @@ public class SprintService {
 		return sprintRepository.save(sprint);
 	}
 
-	public List<Sprint> getSprintsByProjectId(int pid) {
+	public List<Sprint> getSprintsByBacklogId(int bid) {
 		
-		return sprintRepository.getSprintsByProjectId(pid);
+		return sprintRepository.getByBacklogId(bid);
 	}
+
 
 }

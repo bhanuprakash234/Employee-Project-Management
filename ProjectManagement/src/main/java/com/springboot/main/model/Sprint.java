@@ -7,11 +7,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-<<<<<<< HEAD
+
 
 import com.springboot.main.enums.Status;
-=======
->>>>>>> bde90b3b5921ecaea197ac42d3823e001bd5314a
+
 
 @Entity
 public class Sprint {
@@ -24,17 +23,22 @@ private String duration;
 @Enumerated(EnumType.STRING)
 private Status status;
 
-@ManyToOne
-private Project project;
 
-<<<<<<< HEAD
-=======
-private String status;
+
 
 @ManyToOne
-private Project project;
+private Backlog backlog;
 
->>>>>>> bde90b3b5921ecaea197ac42d3823e001bd5314a
+
+
+
+
+public Backlog getBacklog() {
+	return backlog;
+}
+public void setBacklog(Backlog backlog) {
+	this.backlog = backlog;
+}
 public int getId() {
 	return id;
 }
@@ -61,18 +65,6 @@ public Status getStatus() {
 public void setStatus(Status status) {
 	this.status = status;
 }
-public Project getProject() {
-	return project;
-}
-public void setProject(Project project) {
-	this.project = project;
-}
-<<<<<<< HEAD
 
-
-
-
-=======
->>>>>>> bde90b3b5921ecaea197ac42d3823e001bd5314a
 
 }

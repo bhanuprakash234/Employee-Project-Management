@@ -1,5 +1,6 @@
 package com.springboot.main.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.main.enums.Status;
 import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Backlog;
 import com.springboot.main.model.Employee;
@@ -45,6 +47,8 @@ public class BacklogController {
 		Project project = projectService.getById(pid);
 		
 		backlog.setProject(project);
+		backlog.setStatus(Status.TO_DO);
+		backlog.setDateCreated(LocalDate.now());
 		
 		backlog = backlogService.insert(backlog);
 		return ResponseEntity.ok().body(backlog);

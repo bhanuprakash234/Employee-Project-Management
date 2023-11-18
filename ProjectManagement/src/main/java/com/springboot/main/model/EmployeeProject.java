@@ -22,20 +22,24 @@ public class EmployeeProject {
 	@ManyToOne
 	private Project project;
 	
-	private Status status;
+	
+	
+	private double budget;
 	
     
 	
 
 	
 
-	public Status getStatus() {
-		return status;
+	public double getBudget() {
+		return budget;
 	}
 
-	public void setStatus(Status status) {
-		this.status = status;
+	public void setBudget(double budget) {
+		this.budget = budget;
 	}
+
+	
 
 	public int getId() {
 		return id;

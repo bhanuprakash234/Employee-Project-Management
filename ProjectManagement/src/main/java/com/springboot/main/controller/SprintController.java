@@ -21,6 +21,7 @@ import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Backlog;
 import com.springboot.main.model.Project;
 import com.springboot.main.model.Sprint;
+import com.springboot.main.service.BacklogService;
 import com.springboot.main.service.ProjectService;
 import com.springboot.main.service.SprintService;
 
@@ -34,12 +35,17 @@ public class SprintController {
 	@Autowired
 	private ProjectService projectService;
 	
-	@PostMapping("/sprint/add/{pid}")
-	public ResponseEntity<?> CreateSprint(@PathVariable("pid") int pid,@RequestBody Sprint sprint) {
+	@Autowired
+	private BacklogService backlogService;
+	
+	@PostMapping("/sprint/add/{bid}")
+	public ResponseEntity<?> CreateSprint(@PathVariable("bid") int bid,@RequestBody Sprint sprint) {
 		
 		try {
-			Project project = projectService.getById(pid);
-			sprint.setProject(project);
+			
+			Backlog backlog = backlogService.getBacklogById(bid);
+			sprint.setBacklog(backlog);
+			
 		sprint.setStatus(Status.TO_DO);
 		sprint =  sprintService.insert(sprint);
 		return ResponseEntity.ok().body(sprint);
@@ -63,16 +69,6 @@ public class SprintController {
 		try {
 			Sprint sprint = sprintService.getById(sid);
 			return ResponseEntity.ok().body(sprint);
-		} catch (InvalidIdException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
-	}
-	@GetMapping("/sprint/{pid}")
-	public ResponseEntity<?> getSprintsByProjectId(@PathVariable("pid") int pid) {
-		try {
-			Project project = projectService.getById(pid);
-			List<Sprint> list = sprintService.getSprintsByProjectId(pid);
-			return ResponseEntity.ok().body(list);
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
@@ -107,5 +103,15 @@ public class SprintController {
 		}
 	}
 	
+	@GetMapping("/sprint/{bid}")
+	public ResponseEntity<?> getSprintsByBacklogId(@PathVariable("bid") int bid) {
+		try {
+		Backlog backlog = backlogService.getBacklogById(bid);
+		List<Sprint> list = sprintService.getSprintsByBacklogId(bid);
+		return ResponseEntity.ok().body(list);
+	}catch (InvalidIdException e) {
+		return ResponseEntity.badRequest().body(e.getMessage());
+	}
+	}
 
 }

@@ -1,5 +1,6 @@
 package com.springboot.main.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,17 +37,17 @@ public class ProjectController {
 	@Autowired
 	private ProjectService projectService;
 	
-	@PostMapping("/project/add/")
-	public  void insertProject(
+	@PostMapping("/project/add")
+	public  ResponseEntity<?> insertProject(
 			@RequestBody Project project){
 	
 		
 		
-		
+		project.setStartDate(LocalDate.now());
 	
 		project.setStatus(Status.TO_DO);
 		project = projectService.insert(project);
-	
+	return ResponseEntity.ok().body(project);
 
 }
 	
