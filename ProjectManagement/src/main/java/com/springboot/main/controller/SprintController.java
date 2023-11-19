@@ -93,8 +93,9 @@ public class SprintController {
 			if(newSprint.getDuration() != null)
 				sprint.setDuration(newSprint.getDuration());
 			if(newSprint.getStatus() != null)
-				sprint.setStatus(newSprint.getStatus());
-		
+				sprint.setStatus(Status.TO_DO);
+			if(newSprint.getTitle() != null)
+				sprint.setTitle(newSprint.getTitle());
 			
 			sprint = sprintService.insertEmployee(sprint);
 			return ResponseEntity.ok().body(sprint);

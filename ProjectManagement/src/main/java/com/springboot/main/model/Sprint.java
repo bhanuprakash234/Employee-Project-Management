@@ -33,17 +33,18 @@ private Backlog backlog;
 
 
 
-public Backlog getBacklog() {
-	return backlog;
-}
-public void setBacklog(Backlog backlog) {
-	this.backlog = backlog;
-}
+
 public int getId() {
 	return id;
 }
 public void setId(int id) {
 	this.id = id;
+}
+public Backlog getBacklog() {
+	return backlog;
+}
+public void setBacklog(Backlog backlog) {
+	this.backlog = backlog;
 }
 public String getTitle() {
 	return title;

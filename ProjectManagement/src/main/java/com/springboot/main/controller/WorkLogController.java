@@ -50,7 +50,6 @@ public class WorkLogController {
 	public ResponseEntity<?> getWorkLogsAndEmployeeWithTaskByTaskId(@PathVariable("tid")int tid){
 		
 		try {
-			
 			Task task = taskService.getById(tid);
 		List<WorkLog> list =  worklogService.getWorkLogsAndEmployeeWithTaskByTaskId(tid);
 		return ResponseEntity.ok().body(list);

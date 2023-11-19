@@ -60,14 +60,7 @@ public class EmployeeController {
 	@PostMapping("/employee/add/{mid}")//:Adding Employee
 	public ResponseEntity<?> insertEmployee(@PathVariable("mid")int mid,
 			@RequestBody Employee employee) {
-		
-		
-		
 		try {
-			
-			
-			
-		
 		//save user info in db
 		User user=employee.getUser();
 		//// i am encrypting the password
@@ -85,13 +78,9 @@ public class EmployeeController {
 		user = userService.insert(user);
 		// attach the saved user(in step 1)
 		employee.setUser(user);
-		
-		
-		
 		employee= employeeService.insert(employee);
 		
-		
-		 return ResponseEntity.ok().body(employee);
+		return ResponseEntity.ok().body(employee);
 		
 		}catch(InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -162,6 +151,12 @@ public class EmployeeController {
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
+	}
+	
+	@GetMapping("/search/employee/name")
+	public ResponseEntity<?> SearchByEmployeeName(@RequestParam String name) {
+		List<Employee> list = employeeService.SearchByEmployeeName(name);
+		return ResponseEntity.ok().body(list);
 	}
 
 }

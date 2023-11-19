@@ -65,6 +65,8 @@ public class UserController {
 				user.setPassword(newUser.getPassword());
 			if(newUser.getEmail() != null)
 				user.setEmail(newUser.getEmail());
+			if(newUser.getUsername() != null)
+				user.setUsername(newUser.getUsername());
 			
 			
 			user =userService.insertUser(user);

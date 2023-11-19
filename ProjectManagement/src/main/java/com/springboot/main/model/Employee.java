@@ -34,6 +34,8 @@ public class Employee {
 	@ManyToOne
 	private Manager manager;
 	
+	
+	
 	public int getId() {
 		return id;
 	}
