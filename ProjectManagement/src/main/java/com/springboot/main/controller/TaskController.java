@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,17 +22,20 @@ import com.springboot.main.exception.IllegalArgumentException;
 import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Backlog;
 import com.springboot.main.model.Employee;
+import com.springboot.main.model.Project;
 import com.springboot.main.model.Sprint;
 import com.springboot.main.model.Task;
 import com.springboot.main.model.WorkLog;
 import com.springboot.main.repository.TaskRepository;
 import com.springboot.main.service.BacklogService;
 import com.springboot.main.service.EmployeeService;
+import com.springboot.main.service.ProjectService;
 import com.springboot.main.service.SprintService;
 import com.springboot.main.service.TaskService;
 import com.springboot.main.service.WorklogService;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000"})
 
 public class TaskController {
 	
@@ -49,6 +53,9 @@ public class TaskController {
 
 	@Autowired
 	private SprintService sprintService;
+	
+	@Autowired
+	private ProjectService projectService;
 	
 	@PostMapping("task/add/{sid}/{eid}")
 	public ResponseEntity<?> CreateTask(
@@ -93,6 +100,16 @@ public class TaskController {
 			 return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+	@GetMapping("/task/project/{pid}")//:To get a tasks by projectId
+	public ResponseEntity<?> getAllTasksByProjectId(@PathVariable("pid")int pid){
+		try {
+			Project project = projectService.getById(pid);
+		List<Task> list =  taskService.getAllTasksByProjectId(pid);
+		return ResponseEntity.ok().body(list);
+		}catch(InvalidIdException e) {
+			 return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 	
 
 	@GetMapping("/task/getAll")
@@ -113,12 +130,20 @@ public class TaskController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-	@GetMapping("/search/taskName")
-	public ResponseEntity<?> getByTaskTitle(@RequestParam String title) {
+	@GetMapping("/search/taskName/{title}")
+	public ResponseEntity<?> getByTaskTitle(@PathVariable String title) {
 		
 			List<Task> list = taskService.getByTaskTitle(title);
 			return ResponseEntity.ok().body(list);
+			
+			
 		
+	}
+	
+	@GetMapping("/search/task/{qStr}")
+	public List<Task> searchByTaskName(@PathVariable("qStr") String qStr) {
+		List<Task> list= taskService.searchByTaskName(qStr);
+		return list; 
 	}
 	
 	@DeleteMapping("/task/delete/{tid}")
@@ -141,6 +166,9 @@ public class TaskController {
 			Task task = taskService.getById(tid);
 			if(newTask.getDetails() != null)
 				task.setDetails(newTask.getDetails());
+			if(newTask.getStatus() != null)
+				task.setStatus(newTask.getStatus());
+			
 			
 			task =taskService.insertTask(task);
 			return ResponseEntity.ok().body(task);
@@ -148,4 +176,5 @@ public class TaskController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+	
 }

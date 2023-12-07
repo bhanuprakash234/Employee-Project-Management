@@ -48,5 +48,10 @@ public class SprintService {
 		return sprintRepository.getByBacklogId(bid);
 	}
 
+	public List<Sprint> getSprintsByProjectId(int pid) {
+		// TODO Auto-generated method stub
+		return sprintRepository.getSprintsByProjectId(pid);
+	}
+
 
 }

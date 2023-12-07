@@ -40,5 +40,19 @@ public class ProjectService {
 		return projectRepository.save(project);
 		
 	}
+	
+	
+	public List<Project> getByManagerId(int mid) {
+		// TODO Auto-generated method stub
+		return projectRepository.getByManagerId(mid);
+	}
+	public List<Project> getByEmployeeId(int eid) {
+		// TODO Auto-generated method stub
+		return projectRepository.getByEmployeeId(eid);
+	}
+	public List<Project> searchByProjectName(String qStr) {
+		
+		return projectRepository.searchByProjectName(qStr);
+	}
 
 }

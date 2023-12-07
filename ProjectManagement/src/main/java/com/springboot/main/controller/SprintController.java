@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import com.springboot.main.service.ProjectService;
 import com.springboot.main.service.SprintService;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000"})
 
 public class SprintController {
 	
@@ -109,6 +111,16 @@ public class SprintController {
 		try {
 		Backlog backlog = backlogService.getBacklogById(bid);
 		List<Sprint> list = sprintService.getSprintsByBacklogId(bid);
+		return ResponseEntity.ok().body(list);
+	}catch (InvalidIdException e) {
+		return ResponseEntity.badRequest().body(e.getMessage());
+	}
+	}
+	@GetMapping("/sprint/project/{pid}")
+	public ResponseEntity<?> getSprintsByProjectId(@PathVariable("pid") int pid) {
+		try {
+		Project project = projectService.getById(pid);
+		List<Sprint> list = sprintService.getSprintsByProjectId(pid);
 		return ResponseEntity.ok().body(list);
 	}catch (InvalidIdException e) {
 		return ResponseEntity.badRequest().body(e.getMessage());

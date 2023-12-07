@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.springboot.main.enums.Status;
 import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Employee;
 import com.springboot.main.model.Task;
@@ -72,7 +73,23 @@ public class TaskService {
 		return taskRepository.getBySprintId(sid);
 	}
 
+	public List<Task> getAllTasksByProjectId(int pid) {
+		
+		return taskRepository.getAllTasksByProjectId(pid);
+	}
+
+	public List<Task> searchByTaskName(String qStr) {
+		// TODO Auto-generated method stub
+		return taskRepository.searchByTaskName(qStr);
+	}
+
+	}
+
+	
+
+	
+
 	
 
 
-}
+

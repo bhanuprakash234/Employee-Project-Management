@@ -20,13 +20,25 @@ public class WorkLog {
 
 	private String log;
 	
+	private String name;
+	
 	@Column(name="log_date")
 	private LocalDate logDate;
 	
 	@ManyToOne
 	private Task task;
 	
+	
+	
 
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public int getId() {
 		return id;

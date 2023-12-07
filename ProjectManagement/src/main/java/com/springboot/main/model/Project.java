@@ -33,9 +33,20 @@ public class Project {
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	
+	@ManyToOne
+	private Manager manager;
+	
 
 	
 	
+
+	public Manager getManager() {
+		return manager;
+	}
+
+	public void setManager(Manager manager) {
+		this.manager = manager;
+	}
 
 	public int getId() {
 		return id;

@@ -1,13 +1,13 @@
 package com.springboot.main.model;
 
-import javax.persistence.Entity;
+import javax.persistence.Entity;  
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.springboot.main.enums.Status;
+
 
 @Entity
 @Table(name = "employee_project")
@@ -24,20 +24,14 @@ public class EmployeeProject {
 	
 	
 	
-	private double budget;
+	
 	
     
 	
 
 	
 
-	public double getBudget() {
-		return budget;
-	}
-
-	public void setBudget(double budget) {
-		this.budget = budget;
-	}
+	
 
 	
 

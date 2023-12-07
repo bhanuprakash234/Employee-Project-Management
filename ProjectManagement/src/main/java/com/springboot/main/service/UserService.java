@@ -56,6 +56,10 @@ public class UserService implements UserDetailsService {
 		// TODO Auto-generated method stub
 		return userRepository.save(user);
 	}
+	public User getUserByUserName(String username) {
+		 
+		return userRepository.findByUsername(username);
+	}
 	
 	
 

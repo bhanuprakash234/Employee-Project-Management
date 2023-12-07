@@ -7,28 +7,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springboot.main.enums.Role;
 import com.springboot.main.enums.Status;
 import com.springboot.main.exception.InvalidIdException;
-import com.springboot.main.model.Backlog;
+import com.springboot.main.model.Employee;
+import com.springboot.main.model.Manager;
 import com.springboot.main.model.Project;
-import com.springboot.main.model.Sprint;
+import com.springboot.main.model.Task;
+import com.springboot.main.service.EmployeeService;
+import com.springboot.main.service.ManagerService;
 import com.springboot.main.service.ProjectService;
-import com.springboot.main.service.SprintService;
 
 
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000"})
 
 public class ProjectController {
 	
@@ -37,9 +39,19 @@ public class ProjectController {
 	@Autowired
 	private ProjectService projectService;
 	
-	@PostMapping("/project/add")
-	public  ResponseEntity<?> insertProject(
+	@Autowired
+	private ManagerService managerService;
+	
+	@Autowired
+	private  EmployeeService employeeService;
+	
+	@PostMapping("/project/add/{mid}")
+	public  ResponseEntity<?> insertProject(@PathVariable("mid")int mid,
 			@RequestBody Project project){
+		try {
+		
+		Manager manager = managerService.getById(mid);
+		project.setManager(manager);
 	
 		
 		
@@ -49,6 +61,9 @@ public class ProjectController {
 		project = projectService.insert(project);
 	return ResponseEntity.ok().body(project);
 
+} catch (InvalidIdException e) {
+	return ResponseEntity.badRequest().body(e.getMessage());
+}
 }
 	
 
@@ -60,6 +75,34 @@ public class ProjectController {
 		Pageable pageable = PageRequest.of(page, size);
 		return projectService.getAllProject(pageable);
 	}
+	@GetMapping("/project/getAll/manager/{mid}")
+	public ResponseEntity<?> getAllProjectByManagerId( @PathVariable("mid")int mid,
+			                             @RequestParam(value="page",required=false,defaultValue="0")Integer page,
+			                             @RequestParam(value="size",required=false,defaultValue="111111111")Integer size) {
+		try {
+			Manager manager= managerService.getById(mid);
+		
+		List<Project> list = projectService.getByManagerId(mid);
+		return ResponseEntity.ok().body(list);
+		
+	}catch (InvalidIdException e) {
+		return ResponseEntity.badRequest().body(e.getMessage());
+	}
+	}
+	@GetMapping("/project/getAll/employee/{eid}")
+	public ResponseEntity<?> getAllProjectByEmployeeId( @PathVariable("eid")int eid,
+			                             @RequestParam(value="page",required=false,defaultValue="0")Integer page,
+			                             @RequestParam(value="size",required=false,defaultValue="111111111")Integer size) {
+		try {
+			Employee employee = employeeService.getById(eid);
+		
+		List<Project> list = projectService.getByEmployeeId(eid);
+		return ResponseEntity.ok().body(list);
+		
+	}catch (InvalidIdException e) {
+		return ResponseEntity.badRequest().body(e.getMessage());
+	}
+	}
 	
 	@GetMapping("/project/one/{pid}")
 	public ResponseEntity<?> getById(@PathVariable("pid") int pid) {
@@ -70,6 +113,7 @@ public class ProjectController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+	
 	@DeleteMapping("/project/delete/{pid}")
 	public ResponseEntity<?> deleteProject(@PathVariable("pid") int pid) {
 		try {
@@ -97,5 +141,10 @@ public class ProjectController {
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
+	}
+	@GetMapping("/search/project/{qStr}")
+	public List<Project> searchByProjectName(@PathVariable("qStr") String qStr) {
+		List<Project> list= projectService.searchByProjectName(qStr);
+		return list; 
 	}
 }

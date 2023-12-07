@@ -43,5 +43,10 @@ public class EmployeeProjectService {
 		return employeeProjectRepository.save(employeeproject);
 	}
 
+	public List<EmployeeProject> getEmployeeProjectByManagerId(int mid) {
+		
+		return employeeProjectRepository.getEmployeeProjectByManagerId(mid);
+	}
+
 
 }

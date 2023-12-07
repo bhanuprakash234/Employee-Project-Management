@@ -1,14 +1,17 @@
 package com.springboot.main.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +24,7 @@ import com.springboot.main.model.User;
 import com.springboot.main.service.UserService;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000"})
 
 public class UserController {
 	
@@ -74,5 +78,13 @@ public class UserController {
 		} catch (InvalidIdException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
+	}
+	
+	
+	@PostMapping("/auth/login")
+	public User login(Principal principal) {
+		String username = principal.getName();
+		User user  = userService.getUserByUserName(username);
+		return user; 
 	}
 }
