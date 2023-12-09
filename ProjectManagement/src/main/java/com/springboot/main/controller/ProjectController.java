@@ -3,9 +3,11 @@ package com.springboot.main.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.main.dto.ProjectDto;
 import com.springboot.main.enums.Status;
 import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Employee;
@@ -45,6 +48,9 @@ public class ProjectController {
 	@Autowired
 	private  EmployeeService employeeService;
 	
+	@Autowired
+	private Logger logger;
+	
 	@PostMapping("/project/add/{mid}")
 	public  ResponseEntity<?> insertProject(@PathVariable("mid")int mid,
 			@RequestBody Project project){
@@ -59,9 +65,12 @@ public class ProjectController {
 	
 		project.setStatus(Status.TO_DO);
 		project = projectService.insert(project);
+		
+		logger.info(project.getTitle()+"named project added successfully");
 	return ResponseEntity.ok().body(project);
 
 } catch (InvalidIdException e) {
+	logger.error("issue in adding project");
 	return ResponseEntity.badRequest().body(e.getMessage());
 }
 }
@@ -83,9 +92,11 @@ public class ProjectController {
 			Manager manager= managerService.getById(mid);
 		
 		List<Project> list = projectService.getByManagerId(mid);
+		logger.info("got projects for manager:"+manager.getName());
 		return ResponseEntity.ok().body(list);
 		
 	}catch (InvalidIdException e) {
+		logger.error("issue in getting projects by manager with id :"+mid);
 		return ResponseEntity.badRequest().body(e.getMessage());
 	}
 	}
@@ -97,9 +108,11 @@ public class ProjectController {
 			Employee employee = employeeService.getById(eid);
 		
 		List<Project> list = projectService.getByEmployeeId(eid);
+		logger.info("got projects for employee:"+employee.getName());
 		return ResponseEntity.ok().body(list);
 		
 	}catch (InvalidIdException e) {
+		logger.error("issue in getting projects by employee with id:"+eid);
 		return ResponseEntity.badRequest().body(e.getMessage());
 	}
 	}
@@ -137,14 +150,33 @@ public class ProjectController {
 			if(newProject.getStatus() != null)
 				project.setStatus(Status.TO_DO);
 			project = projectService.insertEmployee(project);
+			logger.info("updated "+project.getTitle());
 			return ResponseEntity.ok().body(project);
 		} catch (InvalidIdException e) {
+			logger.error("Issue in updating project");
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 	@GetMapping("/search/project/{qStr}")
 	public List<Project> searchByProjectName(@PathVariable("qStr") String qStr) {
 		List<Project> list= projectService.searchByProjectName(qStr);
+		logger.info("got projects"+list);
 		return list; 
 	}
-}
+	
+	@PutMapping("/update/project")
+	public ResponseEntity<?> updateProject(@RequestBody ProjectDto dto) {
+		try {
+			projectService.updateProject(dto);
+			logger.info("project updated");
+				return ResponseEntity.status(HttpStatus.OK).body("product updated..");
+
+			}
+			catch(Exception e) {
+				logger.error("issue in updating project");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("product error..");
+
+			}
+		}
+	}
+

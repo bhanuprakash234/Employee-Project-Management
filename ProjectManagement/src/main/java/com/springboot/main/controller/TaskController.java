@@ -3,7 +3,9 @@ package com.springboot.main.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +59,9 @@ public class TaskController {
 	@Autowired
 	private ProjectService projectService;
 	
+	@Autowired
+	private Logger logger;
+	
 	@PostMapping("task/add/{sid}/{eid}")
 	public ResponseEntity<?> CreateTask(
 			          @PathVariable("eid")int eid,
@@ -74,8 +79,10 @@ public class TaskController {
 		task.setStatus(Status.TO_DO);
 		
 		task = taskService.insert(task);
+		logger.info("added task with name:"+task.getTitle());
 		  return ResponseEntity.ok().body(task);
 	}catch(InvalidIdException e) {
+		logger.error("issue in adding task");
 		 return ResponseEntity.badRequest().body(e.getMessage());
 	}
 }
@@ -90,15 +97,23 @@ public class TaskController {
 	}
 	}
 
-	@GetMapping("/task/employee/{eid}")//:To get a task by employeeId
-	public ResponseEntity<?> getAllTasksWithEmployeeId(@PathVariable("eid")int eid){
-		try {
-			Employee employee = employeeService.getById(eid);
-		List<Task> list =  taskService.getAllTasksWithEmployeeId(eid);
-		return ResponseEntity.ok().body(list);
-		}catch(InvalidIdException e) {
-			 return ResponseEntity.badRequest().body(e.getMessage());
-		}
+	@GetMapping("/task/employee/{eid}")
+	public ResponseEntity<?> getAllTasksWithEmployeeId(
+	        @PathVariable("eid") int eid,
+	        @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+	        @RequestParam(value = "size", required = false, defaultValue = "10") Integer size) {
+
+	    try {
+	        Employee employee = employeeService.getById(eid);
+	        Pageable pageable = PageRequest.of(page, size);
+	        Page<Task> taskPage = taskService.getAllTasksWithEmployeeId(eid, pageable);
+
+	        logger.info("retrieved tasks based on employee with name: " + employee.getName());
+	        return ResponseEntity.ok().body(taskPage.getContent());
+	    } catch (InvalidIdException e) {
+	        logger.error("issue in retrieving tasks based on employee");
+	        return ResponseEntity.badRequest().body(e.getMessage());
+	    }
 	}
 	@GetMapping("/task/project/{pid}")//:To get a tasks by projectId
 	public ResponseEntity<?> getAllTasksByProjectId(@PathVariable("pid")int pid){
@@ -143,6 +158,8 @@ public class TaskController {
 	@GetMapping("/search/task/{qStr}")
 	public List<Task> searchByTaskName(@PathVariable("qStr") String qStr) {
 		List<Task> list= taskService.searchByTaskName(qStr);
+		
+		logger.error("searched task by name:"+qStr);
 		return list; 
 	}
 	

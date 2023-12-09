@@ -2,6 +2,7 @@ package com.springboot.main.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +44,9 @@ public class EmployeeProjectController {
 	
 	@Autowired
 	private EmployeeProjectService employeeProjectService;
+	
+	@Autowired
+	private Logger logger;
 
 	@PostMapping("/employeeproject/add/{eid}/{pid}")
 	public ResponseEntity<?> assignProject(@PathVariable("eid") int eid,@PathVariable("pid")int pid
@@ -67,9 +71,11 @@ public class EmployeeProjectController {
 			  
 			  //step:4
 			  employeeProject=employeeProjectService.insert(employeeProject);
+			  logger.info("employee: "+employee.getName()+"assigned to project:"+project.getTitle());
 			  return ResponseEntity.ok().body(employeeProject);
 					  
 		}catch(InvalidIdException e) {
+			logger.error("Issue in adding employee to project");
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
@@ -80,6 +86,7 @@ public class EmployeeProjectController {
 			                             @RequestParam(value="size",required=false,defaultValue="111111111")Integer size) {
 		
 		Pageable pageable = PageRequest.of(page, size);
+		logger.info("got all employee project list");
 		return employeeProjectService.getAllEmployeeProject(pageable);
 	}
 	@GetMapping("/employeeproject/one/{id}")
@@ -96,8 +103,10 @@ public class EmployeeProjectController {
 		try {
 			Manager manager = managerService.getById(mid);
 			List<EmployeeProject> list = employeeProjectService.getEmployeeProjectByManagerId(mid);
+			logger.info("got employee project list of manager:"+manager.getName());
 			return ResponseEntity.ok().body(list);
 		} catch (InvalidIdException e) {
+			logger.error("issue in getting employee projects");
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}

@@ -2,6 +2,7 @@ package com.springboot.main.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +42,9 @@ public class ManagerController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private Logger logger;
+	
 	
 	@PostMapping("/manager/add")//:Adding Manager
 	public Manager insertManager(@RequestBody Manager manager) {
@@ -59,7 +63,7 @@ public class ManagerController {
 		// attach the saved user(in step 1)
 		manager.setUser(user);
 		
-		
+		logger.info("successfully added manager :"+manager.getName());
 		return managerService.insert(manager);
 
 }

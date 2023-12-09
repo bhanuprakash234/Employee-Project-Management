@@ -3,7 +3,9 @@ package com.springboot.main.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +61,9 @@ public class EmployeeController {
 	@Autowired
 	private ManagerService managerService;
 	
+	@Autowired
+	private Logger logger;
+	
 	@PostMapping("/employee/add/{mid}")//:Adding Employee
 	public ResponseEntity<?> insertEmployee(@PathVariable("mid")int mid,
 			@RequestBody Employee employee) {
@@ -81,10 +86,11 @@ public class EmployeeController {
 		// attach the saved user(in step 1)
 		employee.setUser(user);
 		employee= employeeService.insert(employee);
-		
+		logger.info("added employee with username :"+ employee.getName());
 		return ResponseEntity.ok().body(employee);
 		
 		}catch(InvalidIdException e) {
+			logger.error("added employee with username :"+ employee.getName());
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
@@ -94,18 +100,27 @@ public class EmployeeController {
 
 
 	@GetMapping("/employee/manager/{mid}")
-	public ResponseEntity<?> getEmployeesByManager(@PathVariable("mid")int mid) {
-		try {
-			
-		Manager manager = managerService.getById(mid);
-		List<Employee> list =  employeeService.getEmployeesByManager(mid);
-		return ResponseEntity.ok().body(list);
-	}catch(InvalidIdException e) {
-		return ResponseEntity.ok().body(e.getMessage());
-	}
-	
-	
-	}
+	public ResponseEntity<?> getEmployeesByManager(
+		    @PathVariable("mid") int mid,
+		    @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+		    @RequestParam(value = "size", required = false, defaultValue = "10") Integer size) {
+
+		    try {
+		        Manager manager = managerService.getById(mid);
+
+		        Pageable pageable = PageRequest.of(page, size);
+		        Page<Employee> employeePage = employeeService.getEmployeesByManager(mid, pageable);
+
+		        logger.info("Got employees by manager: " + manager.getName());
+		        
+		        // You may want to return additional pagination information like total pages, total elements, etc.
+		        return ResponseEntity.ok()
+		            .body(employeePage);
+		    } catch (InvalidIdException e) {
+		        logger.error("Error getting employees by manager");
+		        return ResponseEntity.badRequest().body(e.getMessage());
+		    }
+		}
 
 	@GetMapping("/employee/getAll")
 	public List<Employee> getAllEmployee(
@@ -125,14 +140,26 @@ public class EmployeeController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+	@GetMapping("/employee/list/manager/{mid}")
+	public ResponseEntity<?> getEmployeeListByManagerId(@PathVariable("mid") int mid) {
+		try {
+			Manager manager = managerService.getById(mid);
+			List<Employee> list = employeeService.getEmployeeListByManagerId(mid);
+			return ResponseEntity.ok().body(list);
+		} catch (InvalidIdException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
 
 	@DeleteMapping("/employee/delete/{eid}")
 	public ResponseEntity<?> deleteEmployee(@PathVariable("eid") int eid) {
 		try {
 			Employee employee = employeeService.getById(eid);
 			employeeService.deleteEmployee(eid);
+			logger.info("employee deleted with name:"+employee.getName());
 			return ResponseEntity.ok().body("Employee Record deleted");
 		} catch (InvalidIdException e) {
+			logger.error("Issue in deleting in employee");
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}

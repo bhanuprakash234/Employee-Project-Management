@@ -1,5 +1,8 @@
 package com.springboot.main.model;
 
+import java.time.LocalDate;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,6 +25,8 @@ private String duration;
 
 @Enumerated(EnumType.STRING)
 private Status status;
+
+
 
 
 
@@ -66,6 +71,8 @@ public Status getStatus() {
 public void setStatus(Status status) {
 	this.status = status;
 }
+
+
 
 
 }

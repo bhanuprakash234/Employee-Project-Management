@@ -2,10 +2,13 @@ package com.springboot.main.controller;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springboot.main.dto.ProjectDto;
+import com.springboot.main.dto.UserDto;
 import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Task;
 import com.springboot.main.model.User;
@@ -30,6 +35,9 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private Logger logger;
 	
 	@GetMapping("/user/getAll")
 	public List<User> getAllUser(
@@ -85,6 +93,39 @@ public class UserController {
 	public User login(Principal principal) {
 		String username = principal.getName();
 		User user  = userService.getUserByUserName(username);
+		logger.info("logged in successfully as :"+username);
 		return user; 
 	}
+	
+	 @PutMapping("/update-password/{username}")
+	    public ResponseEntity<String> updatePassword(@PathVariable String username, @RequestBody String newPassword) {
+	        userService.updateEncryptedPassword(username, newPassword);
+	        return ResponseEntity.ok("Password updated successfully.");
+	    }
+	 
+	 @GetMapping("/check-username/{username}")
+	    public ResponseEntity<String> checkUsername(@PathVariable String username) {
+	        User existingUser = userService.getUserByUserName(username);
+
+	        if (existingUser != null) {
+	            return ResponseEntity.ok("Username is already taken");
+	        } else {
+	            return ResponseEntity.ok("Username is available");
+	        }
+	    }
+	 @PutMapping("/update/userDetails/{id}")
+		public ResponseEntity<?> updateProject(@RequestParam int id,@RequestBody UserDto dto) {
+			try {
+				dto.setId(id);
+				userService.updateProject(dto);
+				logger.info("user details updated");
+					return ResponseEntity.status(HttpStatus.OK).body("product updated..");
+
+				}
+				catch(Exception e) {
+					logger.error("issue in updating user details");
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("product error..");
+
+				}
+			}
 }

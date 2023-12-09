@@ -3,6 +3,7 @@ package com.springboot.main.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -38,6 +39,9 @@ public class NotificationController {
 	@Autowired
 	private TaskService taskService;
 	
+	@Autowired
+	private Logger logger;
+	
 	@PostMapping("/sendNotification/{eid}")
 	public ResponseEntity<?> SendNotification(
 			                    
@@ -59,6 +63,7 @@ public class NotificationController {
 		
 		notification = notificationService.sendNotification(notification);
 		
+		logger.info("notification sent to employee:"+employee.getName());
 		return ResponseEntity.ok().body(notification);
 		
 
@@ -72,8 +77,11 @@ public class NotificationController {
 		try {
 			Employee employee = employeeService.getById(eid);
 			List<Notification> list = notificationService.ReceiveNotificationsByEmployeeId(eid);
+			logger.info("receved notification by employee:"+employee.getName());
 			return ResponseEntity.ok().body(list);
 		} catch(InvalidIdException e) {
+			
+			
 	    	  return ResponseEntity.badRequest().body(e.getMessage());
 	      }
 	}

@@ -3,6 +3,7 @@ package com.springboot.main.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +42,9 @@ public class BacklogController {
 	
 	@Autowired
 	private TaskService taskService;
+	
+	@Autowired
+	private Logger logger;
 
 	@PostMapping("/backlog/add/{pid}")
 	public ResponseEntity<?> CreateBacklog(@PathVariable("pid")int pid,
@@ -53,8 +57,10 @@ public class BacklogController {
 		backlog.setDateCreated(LocalDate.now());
 		
 		backlog = backlogService.insert(backlog);
+		logger.info("added backlog"+ backlog.getName());
 		return ResponseEntity.ok().body(backlog);
 	}catch(InvalidIdException e) {
+		logger.error("added backlog"+ backlog.getName());
 		return ResponseEntity.badRequest().body(e.getMessage());
 	}
 }
@@ -66,8 +72,10 @@ public class BacklogController {
 		
 		List<Backlog> list = backlogService.getBacklogByProjectId(pid);
 		
+		logger.info("got backlog by project id :"+ pid);
 		return ResponseEntity.ok().body(list);
 		}catch(InvalidIdException e) {
+			logger.error("didn't got backlog by project id :"+ pid);
 			return ResponseEntity.ok().body(e.getMessage());
 		}
 	}

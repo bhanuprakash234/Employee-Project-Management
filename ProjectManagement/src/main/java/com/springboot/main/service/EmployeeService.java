@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +39,9 @@ public class EmployeeService {
 	}
 
 
-	public List<Employee> getEmployeesByManager(int mid) {
+	public Page<Employee> getEmployeesByManager(int mid , Pageable pageable) {
 		
-		return employeeRepository.findByManagerId(mid);
+		return employeeRepository.findByManagerId(mid , pageable );
 	}
 
 	public List<Employee> getAllEmployee(Pageable pageable) {
@@ -69,5 +70,10 @@ public class EmployeeService {
 	public List<Employee> SearchByEmployeeName(String name) {
 		return employeeRepository.findByName(name);
 		
+	}
+
+	public List<Employee> getEmployeeListByManagerId(int mid) {
+		// TODO Auto-generated method stub
+		return employeeRepository.getEmployeeListByManagerId(mid);
 	}
 }

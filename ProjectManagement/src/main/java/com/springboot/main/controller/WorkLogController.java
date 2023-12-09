@@ -3,6 +3,7 @@ package com.springboot.main.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +36,9 @@ public class WorkLogController {
 	@Autowired
 	private WorklogService worklogService;
 	
+	@Autowired
+	private Logger logger;
+	
 	@PostMapping("/worklog/add/{tid}")//:To add a work log/comment
 	public ResponseEntity<?> InsertWorklog(@PathVariable("tid")int tid,
 			                  @RequestBody WorkLog worklog) {
@@ -43,8 +47,10 @@ public class WorkLogController {
 			worklog.setTask(task);
 			worklog.setLogDate(LocalDate.now());
 		worklog = worklogService.insert(worklog);
+		logger.info("added worklog for task:"+task.getTitle());
 		return ResponseEntity.ok().body(worklog);
 		}catch(InvalidIdException e) {
+			logger.error("issue in adding worklog");
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
@@ -54,9 +60,11 @@ public class WorkLogController {
 		try {
 			Task task = taskService.getById(tid);
 		List<WorkLog> list =  worklogService.getWorkLogsAndEmployeeWithTaskByTaskId(tid);
+		logger.info("retreived worklog for task:"+task.getTitle());
 		return ResponseEntity.ok().body(list);
 		
 		}catch(InvalidIdException e) {
+			logger.error("issue in getting worklogs");
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
