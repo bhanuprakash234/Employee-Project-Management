@@ -185,6 +185,10 @@ public class TaskController {
 				task.setDetails(newTask.getDetails());
 			if(newTask.getStatus() != null)
 				task.setStatus(newTask.getStatus());
+			if(newTask.getTitle() != null)
+				task.setTitle(newTask.getTitle());
+			if(newTask.getNoOfDays() != 0)
+				task.setNoOfDays(newTask.getNoOfDays());
 			
 			
 			task =taskService.insertTask(task);

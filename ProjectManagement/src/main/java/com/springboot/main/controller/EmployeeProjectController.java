@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -102,6 +103,7 @@ public class EmployeeProjectController {
 	public ResponseEntity<?> getEmployeeProjectByManagerId(@PathVariable("mid") int mid) {
 		try {
 			Manager manager = managerService.getById(mid);
+			
 			List<EmployeeProject> list = employeeProjectService.getEmployeeProjectByManagerId(mid);
 			logger.info("got employee project list of manager:"+manager.getName());
 			return ResponseEntity.ok().body(list);

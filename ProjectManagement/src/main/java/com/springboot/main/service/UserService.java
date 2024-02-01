@@ -6,21 +6,18 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import com.springboot.main.SecurityConfig;
-import com.springboot.main.dto.ProjectDto;
-import com.springboot.main.dto.UserDto;
+import org.springframework.stereotype.Service;
+
 import com.springboot.main.exception.InvalidIdException;
-import com.springboot.main.model.Project;
+import com.springboot.main.model.Employee;
 import com.springboot.main.model.User;
+import com.springboot.main.repository.EmployeeRepository;
 import com.springboot.main.repository.UserRepository;
 
 
@@ -31,7 +28,12 @@ public class UserService implements UserDetailsService {
 	
 	@Autowired
     private  UserRepository userRepository;
+	
+	@Autowired
+	private EmployeeRepository employeeRepository;
     
+	@Autowired
+	private JavaMailSender mailSender;
 
     
 
@@ -88,19 +90,35 @@ public class UserService implements UserDetailsService {
 	        // Save the updated user
 	        userRepository.save(user);
 	    }
-	  
-		public void updateProject(UserDto dto) throws InvalidIdException {
-			// TODO Auto-generated method stub
-			Optional<User> optional =  userRepository.findById(dto.getId());
-			if(!optional.isPresent())
-				throw new InvalidIdException("User ID Invalid");
-			User user =  optional.get();
-			user.setEmail(dto.getEmail());
-			user.setUsername(dto.getUsername());
 
-			userRepository.save(user);
-			
+	  public void sendEmailOnRegistration(int userId) throws InvalidIdException {
+		    Optional<Employee> optional = employeeRepository.findById(userId);
+		    
+		    if (!optional.isPresent()) {
+		        throw new InvalidIdException("id not found");
+		    }
+		    
+		    Employee employee = optional.get();
+		    // Assuming userRepository.findById method requires a parameter, replace it accordingly
+		    // User user = userRepository.findById(customer.getId()).orElse(new User());
+		    
+		    String subject = "Registration confirmation";
+		    String text = "Dear " + employee.getName() + ",\n\n" +
+		            "Welcome to Corporate World – where every journey begins with excitement and comfort!  We are thrilled to have you on board as a valued member of our community.\n\n" +
+		            "Feel free to explore our user-friendly website,named xxyyy.com discover our organization verticals and horizontals and tools , If you ever need assistance or have questions, our dedicated support team is here to help.\n\n" +
+		            "Thank you for choosing our organization for your career. Get ready to explore the corporate world!\n\n" +
+		            "Warm regards";
+		           
+
+		    // Assuming mailSender is an instance of JavaMailSender
+		    SimpleMailMessage message = new SimpleMailMessage();
+		    message.setTo(employee.getEmail());
+		    message.setSubject(subject);
+		    message.setText(text);
+		    mailSender.send(message);
 		}
+	  
+		
 	
 	
 

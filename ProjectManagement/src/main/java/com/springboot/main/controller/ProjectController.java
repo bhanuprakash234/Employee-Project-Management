@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springboot.main.dto.ProjectDto;
+
 import com.springboot.main.enums.Status;
 import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Employee;
 import com.springboot.main.model.Manager;
 import com.springboot.main.model.Project;
-import com.springboot.main.model.Task;
+
 import com.springboot.main.service.EmployeeService;
 import com.springboot.main.service.ManagerService;
 import com.springboot.main.service.ProjectService;
@@ -145,6 +145,8 @@ public class ProjectController {
 			Project project = projectService.getById(pid);
 			if(newProject.getLongDesc() != null)
 				project.setLongDesc(newProject.getLongDesc());
+			if(newProject.getTitle() != null)
+				project.setTitle(newProject.getTitle());
 			if(newProject.getEndDate() != null)
 				project.setEndDate(newProject.getEndDate());
 			if(newProject.getStatus() != null)
@@ -164,19 +166,6 @@ public class ProjectController {
 		return list; 
 	}
 	
-	@PutMapping("/update/project")
-	public ResponseEntity<?> updateProject(@RequestBody ProjectDto dto) {
-		try {
-			projectService.updateProject(dto);
-			logger.info("project updated");
-				return ResponseEntity.status(HttpStatus.OK).body("product updated..");
-
-			}
-			catch(Exception e) {
-				logger.error("issue in updating project");
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("product error..");
-
-			}
-		}
+	
 	}
 

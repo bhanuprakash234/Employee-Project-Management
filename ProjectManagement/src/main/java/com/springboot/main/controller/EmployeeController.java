@@ -87,6 +87,12 @@ public class EmployeeController {
 		employee.setUser(user);
 		employee= employeeService.insert(employee);
 		logger.info("added employee with username :"+ employee.getName());
+		int uid=employee.getId(); 
+		try {
+			userService.sendEmailOnRegistration(uid); 
+			} catch (InvalidIdException e) { e.printStackTrace(); 
+			}
+
 		return ResponseEntity.ok().body(employee);
 		
 		}catch(InvalidIdException e) {

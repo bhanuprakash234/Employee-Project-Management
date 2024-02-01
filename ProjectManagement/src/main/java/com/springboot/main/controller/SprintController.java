@@ -1,6 +1,6 @@
 package com.springboot.main.controller;
 
-import java.time.LocalDate;
+
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springboot.main.dto.SprintDto;
+
 import com.springboot.main.enums.Status;
 import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Backlog;
@@ -139,20 +139,7 @@ public class SprintController {
 	}
 	}
 	
-	@PutMapping("/update/sprint")
-	public ResponseEntity<?> updateStatus(@RequestBody SprintDto dto) {
-		try {
-			sprintService.updateStatus(dto);
-			logger.info("updated sprint");
-				return ResponseEntity.status(HttpStatus.OK).body("Sprint updated..");
 
-			}
-			catch(Exception e) {
-				logger.error("issue in updating sprint");
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("sprint error..");
-
-			}
-	}
 	
 	
 

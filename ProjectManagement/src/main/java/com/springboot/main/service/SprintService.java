@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.springboot.main.dto.SprintDto;
+
 import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Sprint;
 import com.springboot.main.repository.SprintRepository;
@@ -54,16 +54,7 @@ public class SprintService {
 		return sprintRepository.getSprintsByProjectId(pid);
 	}
 
-	public void updateStatus(SprintDto dto) throws InvalidIdException {
-		// TODO Auto-generated method stub
-		Optional<Sprint> optional =  sprintRepository.findById(dto.getId());
-		if(!optional.isPresent())
-			throw new InvalidIdException("Sprint ID Invalid");
-		Sprint sprint =  optional.get();
-		sprint.setStatus(dto.getStatus());
-
-		sprintRepository.save(sprint);
-	}
+	
 		
 	}
 

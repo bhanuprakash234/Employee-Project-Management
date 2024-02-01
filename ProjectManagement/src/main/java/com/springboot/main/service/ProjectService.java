@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.springboot.main.dto.ProjectDto;
+
 import com.springboot.main.exception.InvalidIdException;
 import com.springboot.main.model.Project;
 import com.springboot.main.repository.ProjectRepository;
@@ -55,16 +55,6 @@ public class ProjectService {
 		
 		return projectRepository.searchByProjectName(qStr);
 	}
-	public void updateProject(ProjectDto dto) throws InvalidIdException {
-		// TODO Auto-generated method stub
-		Optional<Project> optional =  projectRepository.findById(dto.getId());
-		if(!optional.isPresent())
-			throw new InvalidIdException("Project ID Invalid");
-		Project project =  optional.get();
-		project.setStatus(dto.getStatus());
-
-		projectRepository.save(project);
-		
-	}
+	
 
 }
